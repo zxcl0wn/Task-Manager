@@ -1,9 +1,33 @@
 from django.shortcuts import render
 
 
-def projects_test(request):
+def main_page(request):
     context = {
 
     }
 
     return render(request, 'projects/test.html', context=context)
+
+
+def projects_list(request):
+    context = {
+
+    }
+
+    return render(request, 'projects/projects_list.html', context=context)
+
+
+def project(request):
+    context = {
+
+    }
+
+    return render(request, 'projects/project.html', context=context)
+
+
+def create_project(request):
+    context = {
+
+    }
+
+    return render(request, 'projects/project_form.html', context=context)
