@@ -17,7 +17,7 @@ def projects_list(request):
     return render(request, 'projects/projects_list.html', context=context)
 
 
-def project(request):
+def project_view(request):
     context = {
 
     }
