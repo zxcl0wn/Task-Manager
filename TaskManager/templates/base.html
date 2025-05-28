@@ -1,15 +1,18 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% load static %}
 
-<body>
-    {% include 'navbar.html' %}
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
 
-    {% block content %}
+    <body>
+        {% include 'navbar.html' %}
+{#        <img src="{% static 'projects/1.jpg' %}" alt="!!!">#}
 
-    {% endblock %}
-</body>
+        {% block content %}
+
+        {% endblock %}
+    </body>
 </html>
