@@ -7,3 +7,6 @@ class Project(models.Model):
     description = models.TextField(blank=True)
     comment = models.TextField(blank=True)
     users = models.ManyToManyField(User, blank=False)
+
+    def __str__(self):
+        return self.title

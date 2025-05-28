@@ -14,14 +14,21 @@ class Task(models.Model):
         ("DONE", "done")
     ]
 
+    title = models.CharField(max_length=20, blank=False)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
-    description = models.TextField()
+    description = models.TextField(blank=True)
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default="M")
-    comment = models.TextField()
+    comment = models.TextField(blank=True)
     deadline_date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="NEW")
+
+    def __str__(self):
+        return self.title
 
 
 class Subtask(models.Model):
     title = models.CharField(max_length=30, blank=False)
     task_id = models.ForeignKey(Task, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
