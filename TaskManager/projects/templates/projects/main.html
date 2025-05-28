@@ -1,0 +1,8 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+	<h1>Main Page</h1>
+    <a href="{% url 'app_tasks:task_create' %}">Создать задачу</a>
+    <a href="{% url 'app_projects:create_project' %}">Создать проект</a>
+{% endblock %}

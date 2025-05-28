@@ -2,6 +2,7 @@
 
 <header>
     <div>
+        <a href="{% url 'app_notification:notifications' %}"><img style="max-height: 30px; max-width: 30px" src="{% static 'notification/images/bell.png' %}"></a>
         <a href="{% url 'app_projects:main' %}">Task Manager</a>
         <a href="{% url 'app_projects:main' %}">Главная</a>
         <a href="{% url 'app_tasks:tasks_list' %}">Задачи</a>
