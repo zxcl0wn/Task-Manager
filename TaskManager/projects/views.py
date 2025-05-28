@@ -6,7 +6,7 @@ def main_page(request):
 
     }
 
-    return render(request, 'projects/test.html', context=context)
+    return render(request, 'projects/main.html', context=context)
 
 
 def projects_list(request):
