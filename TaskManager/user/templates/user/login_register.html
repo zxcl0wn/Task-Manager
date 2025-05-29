@@ -2,8 +2,13 @@
 {% load static %}
 
 {% block content %}
-    <form method="POST">
+    {% if page == 'register' %}
+        <form method="POST">
         {% csrf_token %}
         {{ form.as_p }}
     </form>
+    {% else %}
+        <h1>Логин</h1>
+    {% endif %}
+
 {% endblock %}

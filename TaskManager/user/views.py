@@ -4,7 +4,8 @@ from .forms import UserForm
 
 def login_user(request):
     context = {
-
+        # 'form': form
+        'page': 'login',
     }
 
     return render(request, 'user/login_register.html', context=context)
@@ -15,8 +16,9 @@ def register_user(request):
 
     context = {
         'form': form,
+        'page': 'register'
     }
-
+    print(f'!{context}')
     return render(request, 'user/login_register.html', context=context)
 
 
