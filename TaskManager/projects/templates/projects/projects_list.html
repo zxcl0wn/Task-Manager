@@ -3,4 +3,10 @@
 
 {% block content %}
 	<h1>Список проектов</h1>
+    <ul>
+        {% for project in projects %}
+        	<li><a href="{% url 'app_projects:project' project.id %}">{{ project }}</a></li>
+        {% endfor %}
+
+    </ul>
 {% endblock %}
