@@ -1,6 +1,108 @@
-{% extends 'base.html' %}
-{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Task Manager - Мои задачи</title>
+        <link rel="stylesheet" href="style.css" />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+            rel="stylesheet"
+        />
+    </head>
+    <body>
+        <header class="navbar">
+            <div class="navbar-logo">
+                <img
+                    class="navbar-logo-img"
+                    src="assets/notif.jpg"
+                    alt="Logo"
+                />
+                <span>Task Manager</span>
+            </div>
+            <nav class="navbar-menu">
+                <a href="main.html">Главная</a>
+                <a href="task.html" class="active">Задачи</a>
+                <a href="#">Проекты</a>
+                <img class="profile" src="assets/profile.jpg" alt="Profile" />
+            </nav>
+        </header>
 
-{% block content %}
-	<h1>Форма создания проекта</h1>
-{% endblock %}
+        <section class="tasks-section">
+            <h2>Мои задачи:</h2>
+            <div class="tasks-container" id="tasksContainer">
+                <!-- Твои карточки -->
+                <div class="task-card">
+                    <h3>Название:</h3>
+                    <button class="add-subtask-btn">Добавить подзадачи</button>
+                    <p>Описание</p>
+                    <p>Срок сдачи: 24.07.2025</p>
+                    <p>Приоритет: высокий</p>
+                    <a href="#" class="comment-link">Добавить комментарий</a>
+                    <button class="status-btn">В работе</button>
+                </div>
+                <div class="task-card">
+                    <h3>Название:</h3>
+                    <button class="add-subtask-btn">Добавить подзадачи</button>
+                    <p>Описание</p>
+                    <p>Срок сдачи: 24.07.2025</p>
+                    <p>Приоритет: средний</p>
+                    <a href="#" class="comment-link">Добавить комментарий</a>
+                    <button class="status-btn">В работе</button>
+                </div>
+                <div class="task-card">
+                    <h3>Название:</h3>
+                    <button class="add-subtask-btn">Добавить подзадачи</button>
+                    <p>Описание</p>
+                    <p>Срок сдачи: 24.07.2025</p>
+                    <p>Приоритет: низкий</p>
+                    <a href="#" class="comment-link">Посмотреть комментарий</a>
+                    <button class="status-btn done">Выполнена</button>
+                </div>
+                <div class="task-card add-task">
+                    <button
+                        class="add-btn"
+                        onclick="location.href='create_task.html'"
+                    >
+                        +
+                    </button>
+                    <p>Добавить задачу</p>
+                </div>
+            </div>
+
+            <!-- Кнопки навигации -->
+            <div class="pagination">
+                <button class="page-btn" onclick="scrollTasks(-1)">
+                    &larr;
+                </button>
+                <button class="page-btn" onclick="scrollTasks(1)">
+                    &rarr;
+                </button>
+            </div>
+
+            <div class="filters">
+                <h3>Фильтрация по:</h3>
+                <label><input type="radio" name="filter" /> Приоритету</label>
+                <label><input type="radio" name="filter" /> Сроку сдачи</label>
+                <label><input type="radio" name="filter" /> Выполненные</label>
+                <label><input type="radio" name="filter" /> В работе</label>
+            </div>
+        </section>
+
+        <script>
+            function scrollTasks(direction) {
+                const container = document.getElementById("tasksContainer");
+                const card = container.querySelector(".task-card");
+                if (!card) return;
+
+                const scrollAmount =
+                    card.offsetWidth +
+                    parseInt(getComputedStyle(container).gap || 56);
+                container.scrollBy({
+                    left: direction * scrollAmount,
+                    behavior: "smooth",
+                });
+            }
+        </script>
+    </body>
+</html>

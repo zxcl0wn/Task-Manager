@@ -1,13 +1,18 @@
 {% load static %}
 
-<header>
-    <div>
-        <a href="{% url 'app_notification:notifications' %}"><img style="max-height: 30px; max-width: 30px" src="{% static 'notification/images/bell.png' %}"></a>
-        <a href="{% url 'app_projects:main' %}">Task Manager</a>
-        <a href="{% url 'app_projects:main' %}">Главная</a>
-        <a href="{% url 'app_tasks:tasks_list' %}">Задачи</a>
-        <a href="{% url 'app_projects:projects_list' %}">Проекты</a>
-        <a href="{% url 'app_user:login' %}">Вход</a>
-        <a href="{% url 'app_user:register' %}">Регистрация</a>
+<header class="navbar">
+    <div class="navbar-logo">
+        <a href="{% url 'app_user:register' %}">
+            <img class="navbar-logo-img" src="assets/notif.jpg" alt="Logo" />
+        </a>
+        <a href="{% url 'app_user:register' %}">
+            <span>Task Manager</span>
+        </a>
     </div>
+    <nav class="navbar-menu">
+        <a href="{% url 'app_projects:main' %}">Главная</a>
+        <a href="{% url 'app_tasks:task_view' %}">Задачи</a>
+        <a href="{% url 'app_projects:projects_list' %}">Проекты</a>
+        <a href="{% url 'app_user:register' %}">Регистрация/Вход</a>
+    </nav>
 </header>
