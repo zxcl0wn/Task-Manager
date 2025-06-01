@@ -3,7 +3,11 @@
 <header class="navbar">
     <div class="navbar-logo">
         <a href="{% url 'app_user:register' %}">
-            <img class="navbar-logo-img" src="assets/notif.jpg" alt="Logo" />
+            <img
+                class="navbar-logo-img"
+                src="{% static 'projects/images/notif.jpg' %}"
+                alt="Logo"
+            />
         </a>
         <a href="{% url 'app_user:register' %}">
             <span>Task Manager</span>
