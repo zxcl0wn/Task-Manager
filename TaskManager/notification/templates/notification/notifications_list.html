@@ -2,9 +2,16 @@
 {% load static %}
 
 {% block content %}
-    <ul>
+<div class="notifications-container">
+    <h1 class="notif-title">Ваши оповещения:</h1>
+
+    <div class="notifications-list">
         {% for notification in notifications %}
-        	<li>{{ notification }}</li>
+            <div class="notification-box">
+                {{ notification }}
+            </div>
         {% endfor %}
-    </ul>
+    </div>
+</div>
 {% endblock %}
+
