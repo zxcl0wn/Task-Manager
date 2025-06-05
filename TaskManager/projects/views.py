@@ -3,6 +3,8 @@ from .models import Project
 
 
 def main_page(request):
+    print(request)
+    
     context = {
 
     }
