@@ -21,8 +21,8 @@ def projects_list(request):
     return render(request, 'projects/projects_list.html', context=context)
 
 
-def project_view(request, project_id):
-    project = Project.objects.get(id=project_id)
+def project_view(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
 
     context = {
         'project': project

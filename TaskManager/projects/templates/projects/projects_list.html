@@ -5,7 +5,7 @@
 	<h1>Список проектов</h1>
     <ul>
         {% for project in projects %}
-        	<li><a href="{% url 'app_projects:project' project.id %}">{{ project }}</a></li>
+        	<li><a href="{% url 'app_projects:project' project.slug %}">{{ project }}</a></li>
         {% endfor %}
 
     </ul>
