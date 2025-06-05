@@ -7,7 +7,7 @@ from user.models import User
 
 class Project(models.Model):
     title = models.CharField(max_length=40, null=True, unique=True)
-    slug = models.SlugField(max_length=40, unique=True, null=True)
+    slug = models.SlugField(max_length=40, unique=True, null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
     users = models.ManyToManyField(User, through='ProjectMember', blank=False)

@@ -1,4 +1,7 @@
 from django.db import models
+from django.template import defaultfilters
+from unidecode import unidecode
+
 from projects.models import Project
 
 
@@ -14,7 +17,8 @@ class Task(models.Model):
         ("DONE", "done")
     ]
 
-    title = models.CharField(max_length=20, blank=False)
+    title = models.CharField(max_length=20, blank=False, unique=True)
+    slug = models.SlugField(max_length=20, null=True, blank=True, unique=True)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     description = models.TextField(blank=True)
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default="M")
@@ -24,6 +28,11 @@ class Task(models.Model):
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        value = self.title
+        self.slug = defaultfilters.slugify(unidecode(value))
+        super().save(*args, **kwargs)
 
 
 class Subtask(models.Model):
