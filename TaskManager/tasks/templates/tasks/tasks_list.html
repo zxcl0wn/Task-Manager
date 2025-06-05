@@ -3,4 +3,10 @@
 
 {% block content %}
 	<h1>Список задач</h1>
-{% endblock %}
+    <ul>
+        {% for task in tasks %}
+            <a href="{% url 'app_tasks:task_view' task.slug %}"><li>{{ task }}</li></a>
+        {% endfor %}
+
+    </ul>
+{% endblock %}+
