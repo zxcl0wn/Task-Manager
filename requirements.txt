@@ -3,3 +3,4 @@ Django==5.2.1
 python-decouple==3.8
 sqlparse==0.5.3
 tzdata==2025.2
+Unidecode==1.4.0

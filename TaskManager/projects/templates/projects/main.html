@@ -4,19 +4,21 @@
 {% block content %}
     <section class="features-section">
         <div class="features-text">
-            <h2>Организовывайте свои задачи <br> и проекты с <strong>Task Manager</strong></br></h2>
+            {# TODO: Убрать лишние закрывающие br #}
+            <h2>Организовывайте свои задачи <br> и проекты с <strong>Task Manager</strong></h2>
             <ul class="features-list">
                 <li>Управление задачами</li>
-                <li>Возможность расстановки <br> приоритетов задач</br></li>
+                <li>Возможность расстановки <br> приоритетов задач</li>
                 <li>Установка сроков для проектов</li>
-                <li>Уведомления о <br>приближающихся задачах</br></li>
-                <li>Комментарии к задачам и <br>проектам</br></li>
+                <li>Уведомления о <br>приближающихся задачах</li>
+                <li>Комментарии к задачам и <br>проектам</li>
             </ul>
             <div class="features-img">
                 <img class="feat-img" src="{% static 'projects/images/pic1.jpg' %}" alt="Feature Image" />
             </div>
-
+            
             <div class="features-buttons">
+                {# TODO: Исправить переход на страницу task_form #}
                 <button class="btn-primary" onclick="location.href='task.html'">Создать задачу</button>
                 <button class="btn-primary">Создать проект</button>
             </div>

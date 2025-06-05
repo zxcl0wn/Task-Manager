@@ -1,6 +1,8 @@
-{% extends 'base.html' %} {% load static %}
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+
 {% block content %}
+{# TODO:Перенести список задач в шаблон 'tasks_list.html'. Тут должно быть описание одной задачи #}
 <section class="tasks-section">
     <h2>Мои задачи:</h2>
     <div class="tasks-container" id="tasksContainer">
@@ -55,6 +57,7 @@
     </div>
 </section>
 
+{# TODO: Перенести скрипт в index.js #}
 <script>
     function scrollTasks(direction) {
         const container = document.getElementById("tasksContainer");

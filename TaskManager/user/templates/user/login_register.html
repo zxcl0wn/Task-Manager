@@ -1,4 +1,7 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
 <section class="auth-section">
     <div class="auth-image">
         <img src="{% static 'user/images/main.jpg' %}" alt="Welcome Image" />
@@ -6,24 +9,24 @@
 
     <div class="auth-form">
         {% if page == 'register' %}
-        <h2>Создайте аккаунт</h2>
-        <p>Введите ваши данные</p>
-        <form method="POST" action="{% url 'app_projects:main' %}">
-            {% csrf_token %}
-            <input type="text" placeholder="Имя" required />
-            <input
-                type="email"
-                placeholder="Адрес электронной почты"
-                required
-            />
-            <input type="password" placeholder="Пароль" required />
-            <input type="password" placeholder="Подтвердите пароль" required />
-            <button type="submit" class="btn-primary">Создать аккаунт</button>
-        </form>
-        <div class="register-row">
-            <p>Есть аккаунт?</p>
-            <a href="{% url 'app_user:login' %}">Войти</a>
-        </div>
+            <h2>Создайте аккаунт</h2>
+            <p>Введите ваши данные</p>
+            <form method="POST" action="{% url 'app_projects:main' %}">
+                {% csrf_token %}
+                <input type="text" placeholder="Имя" required />
+                <input
+                    type="email"
+                    placeholder="Адрес электронной почты"
+                    required
+                />
+                <input type="password" placeholder="Пароль" required />
+                <input type="password" placeholder="Подтвердите пароль" required />
+                <button type="submit" class="btn-primary">Создать аккаунт</button>
+            </form>
+            <div class="register-row">
+                <p>Есть аккаунт?</p>
+                <a href="{% url 'app_user:login' %}">Войти</a>
+            </div>
         {% else %}
         <h2>Войдите в аккаунт</h2>
         <p>Введите ваши данные</p>

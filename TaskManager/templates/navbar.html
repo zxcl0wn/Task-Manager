@@ -7,11 +7,12 @@
         </a>
         <a href="{% url 'app_user:register' %}">
             <span>Task Manager</span>
+            {# TODO: Редирект на страницу "главная" #}
         </a>
     </div>
     <nav class="navbar-menu">
         <a href="{% url 'app_projects:main' %}">Главная</a>
-        <a href="{% url 'app_tasks:task_view' %}">Задачи</a>
+        <a href="{% url 'app_tasks:tasks_list' %}">Задачи</a>
         <a href="{% url 'app_projects:projects_list' %}">Проекты</a>
         <a href="{% url 'app_user:register' %}">Регистрация/Вход</a>
     </nav>
