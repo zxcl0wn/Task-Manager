@@ -7,21 +7,21 @@ from projects.models import Project
 
 class Task(models.Model):
     PRIORITY_CHOICES = [
-        ("LOW", "low"),
-        ("MEDIUM", "medium"),
-        ("HIGH", "high")
+        ("LOW", "низкий"),
+        ("MEDIUM", "средний"),
+        ("HIGH", "высокий")
     ]
     STATUS_CHOICES = [
-        ("NEW", "new"),
-        ("INPR", "in_progress"),
-        ("DONE", "done")
+        ("NEW", "Новая"),
+        ("INPR", "В работе"),
+        ("DONE", "Сделано")
     ]
 
     title = models.CharField(max_length=20, blank=False, unique=True)
     slug = models.SlugField(max_length=20, null=True, blank=True, unique=True)
     project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
     description = models.TextField(blank=True)
-    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default="M")
+    priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default="MEDIUM")
     comment = models.TextField(blank=True)
     deadline_date = models.DateField()
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default="NEW")
