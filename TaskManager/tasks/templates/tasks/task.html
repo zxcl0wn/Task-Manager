@@ -2,74 +2,42 @@
 {% load static %}
 
 {% block content %}
-{# TODO:Перенести список задач в шаблон 'tasks_list.html'. Тут должно быть описание одной задачи #}
-<section class="tasks-section">
-    <h2>Мои задачи:</h2>
-    <div class="tasks-container" id="tasksContainer">
-        <!-- Твои карточки -->
-        <div class="task-card">
-            <h3>Название:</h3>
-            <button class="add-subtask-btn">Добавить подзадачи</button>
-            <p>Описание</p>
+<div class="task-card">
+    <h3>Название:</h3>
+
+    <div class="task-layout">
+        <!-- Подзадачи -->
+        <div class="subtasks">
+            <button class="subtask-btn">Подзадача 1</button>
+
+            <button class="subtask-control-btn">Изменить подзадачи</button>
+            <button class="subtask-control-btn">Добавить подзадачи</button>
+            <button class="subtask-control-btn">Удалить подзадачи</button>
+        </div>
+
+        <!-- Описание и комментарий -->
+        <div class="task-info">
+            <label>Описание задачи</label>
+            <textarea class="task-textarea"></textarea>
+
+            <label>Комментарий:</label>
+            <textarea class="task-textarea"></textarea>
+
+            <button class="status-btn">В работе</button>
+            <button class="delete-btn">Удалить</button>
+        </div>
+
+        <!-- Срок и приоритет -->
+        <div class="task-meta">
             <p>Срок сдачи: 24.07.2025</p>
             <p>Приоритет: высокий</p>
-            <a href="#" class="comment-link">Добавить комментарий</a>
-            <button class="status-btn">В работе</button>
-        </div>
-        <div class="task-card">
-            <h3>Название:</h3>
-            <button class="add-subtask-btn">Добавить подзадачи</button>
-            <p>Описание</p>
-            <p>Срок сдачи: 24.07.2025</p>
-            <p>Приоритет: средний</p>
-            <a href="#" class="comment-link">Добавить комментарий</a>
-            <button class="status-btn">В работе</button>
-        </div>
-        <div class="task-card">
-            <h3>Название:</h3>
-            <button class="add-subtask-btn">Добавить подзадачи</button>
-            <p>Описание</p>
-            <p>Срок сдачи: 24.07.2025</p>
-            <p>Приоритет: низкий</p>
-            <a href="#" class="comment-link">Посмотреть комментарий</a>
-            <button class="status-btn done">Выполнена</button>
-        </div>
-        <div class="task-card add-task">
-            <button class="add-btn" onclick="location.href='create_task.html'">
-                +
-            </button>
-            <p>Добавить задачу</p>
+            <button class="edit-btn">Редактировать</button>
         </div>
     </div>
+</div>
 
-    <!-- Кнопки навигации -->
-    <div class="pagination">
-        <button class="page-btn" onclick="scrollTasks(-1)">&larr;</button>
-        <button class="page-btn" onclick="scrollTasks(1)">&rarr;</button>
-    </div>
-
-    <div class="filters">
-        <h3>Фильтрация по:</h3>
-        <label><input type="radio" name="filter" /> Приоритету</label>
-        <label><input type="radio" name="filter" /> Сроку сдачи</label>
-        <label><input type="radio" name="filter" /> Выполненные</label>
-        <label><input type="radio" name="filter" /> В работе</label>
-    </div>
-</section>
-
-{# TODO: Перенести скрипт в index.js #}
-<script>
-    function scrollTasks(direction) {
-        const container = document.getElementById("tasksContainer");
-        const card = container.querySelector(".task-card");
-        if (!card) return;
-
-        const scrollAmount =
-            card.offsetWidth + parseInt(getComputedStyle(container).gap || 56);
-        container.scrollBy({
-            left: direction * scrollAmount,
-            behavior: "smooth",
-        });
-    }
-</script>
+<!-- Кнопка назад -->
+<div class="back-btn-container">
+    <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn">Вернуться обратно</a>
+</div>
 {% endblock %}

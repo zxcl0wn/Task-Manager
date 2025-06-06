@@ -20,7 +20,7 @@ def task_view(request, task_slug):
     return render(request, 'tasks/task.html', context=context)
 
 
-def task_create(reqeust):
+def task_form(reqeust):
     context = {
 
     }

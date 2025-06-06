@@ -1,12 +1,30 @@
+
 {% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
-	<h1>Список задач</h1>
-    <ul>
+<section class="tasks-section">
+    <h2>Мои задачи:</h2>
+   
+    <ul class="tasks-container" id="tasksContainer">
         {% for task in tasks %}
-            <a href="{% url 'app_tasks:task_view' task.slug %}"><li>{{ task }}</li></a>
+            <li>
+                <a href="{% url 'app_tasks:task_view' task.slug %}">{{ task }}</a>
+            </li>
         {% endfor %}
-
     </ul>
+
+    <div class="pagination">
+        <button class="page-btn" onclick="scrollTasks(-1)">&larr;</button>
+        <button class="page-btn" onclick="scrollTasks(1)">&rarr;</button>
+    </div>
+
+    <div class="filters">
+        <h3>Фильтрация по:</h3>
+        <label><input type="radio" name="filter" /> Приоритету</label>
+        <label><input type="radio" name="filter" /> Сроку сдачи</label>
+        <label><input type="radio" name="filter" /> Выполненные</label>
+        <label><input type="radio" name="filter" /> В работе</label>
+    </div>
+</section>
 {% endblock %}
