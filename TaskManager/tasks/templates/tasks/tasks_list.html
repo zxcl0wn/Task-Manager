@@ -11,16 +11,15 @@
             <div class="taskm-content">
                 <p class="taskm-title"><strong>Название:</strong> {{ task.title }}</p>
                 <button class="taskm-subtask-btn">Добавить подзадачи</button>
-                <p class="taskm-meta">Срок сдачи: {{ task.due_date|date:"d.m.Y" }}</p>
-                <p class="taskm-meta">Приоритет: {{ task.priority }}</p>
-                <span class="taskm-status">В работе</span>
+                <p class="taskm-meta">Срок сдачи: {{ task.deadline_date }}</p>
+                <p class="taskm-meta">Приоритет: {{ task.get_priority_display }}</p>
+                <span class="taskm-status">{{ task.get_status_display }}</span>
             </div>
         </a>
         {% endfor %}
-    </ul>
 
         <!-- Карточка добавления задачи со ссылкой -->
-        <a href="{% url 'app_tasks:task_form' %}" class="taskm-card taskm-add-card">
+        <a href="{% url 'app_tasks:task_create' %}" class="taskm-card taskm-add-card">
             <div class="taskm-add-btn">+</div>
         </a>
     </div>
