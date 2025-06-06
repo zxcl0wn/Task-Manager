@@ -5,7 +5,13 @@ from decouple import config
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 DEBUG = True
-SECRET_KEY=config('SECRET_KEY')
+try:
+    SECRET_KEY = config('SECRET_KEY')
+except:
+    SECRET_KEY = 'django-insecure-' + os.urandom(32).hex()
+    print(f'Временный секретный ключ: {SECRET_KEY}')
+    print('⚠️ Внимание: использован временный ключ!')
+
 ALLOWED_HOSTS = []
 
 
