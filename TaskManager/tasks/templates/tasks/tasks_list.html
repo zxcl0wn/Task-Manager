@@ -3,17 +3,17 @@
 {% load static %}
 
 {% block content %}
-
 <section class="tasks-section">
     <h2>Мои задачи:</h2>
-    <div class="tasks-container" id="tasksContainer">
-        <!-- Твои карточки -->
+   
+    <ul class="tasks-container" id="tasksContainer">
         {% for task in tasks %}
-            <a href="{% url 'app_tasks:task_view' task.slug %}"><li>{{ task }}</li></a>
+            <li>
+                <a href="{% url 'app_tasks:task_view' task.slug %}">{{ task }}</a>
+            </li>
         {% endfor %}
+    </ul>
 
-    </div>
-    <!-- Кнопки навигации -->
     <div class="pagination">
         <button class="page-btn" onclick="scrollTasks(-1)">&larr;</button>
         <button class="page-btn" onclick="scrollTasks(1)">&rarr;</button>
@@ -27,6 +27,4 @@
         <label><input type="radio" name="filter" /> В работе</label>
     </div>
 </section>
-
-
 {% endblock %}
