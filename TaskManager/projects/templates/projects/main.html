@@ -19,7 +19,7 @@
             
             <div class="features-buttons">
                 {# TODO: Исправить переход на страницу task_form #}
-                <button class="btn-primary" onclick="location.href='task.html'">Создать задачу</button>
+                <a href="{% url 'app_tasks:task_form' %}" class="btn-primary">Создать задачу</a>
                 <button class="btn-primary">Создать проект</button>
             </div>
         </div>
