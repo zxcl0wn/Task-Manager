@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="task-card">
-    <h3>Название:</h3>
+    <h3>{{ task.title }}</h3>
 
     <div class="task-layout">
         <!-- Подзадачи -->
@@ -18,19 +18,19 @@
         <!-- Описание и комментарий -->
         <div class="task-info">
             <label>Описание задачи</label>
-            <textarea class="task-textarea"></textarea>
+            <textarea class="task-textarea">{{ task.description }}</textarea>
 
             <label>Комментарий:</label>
-            <textarea class="task-textarea"></textarea>
+            <textarea class="task-textarea">{{ task.comment }}</textarea>
 
-            <button class="status-btn">В работе</button>
+            <button class="status-btn">{{ task.get_status_display }}</button>
             <button class="delete-btn">Удалить</button>
         </div>
 
         <!-- Срок и приоритет -->
         <div class="task-meta">
-            <p>Срок сдачи: 24.07.2025</p>
-            <p>Приоритет: высокий</p>
+            <p>Срок сдачи: {{ task.deadline_date }}</p>
+            <p>Приоритет: {{ task.get_priority_display }}</p>
             <button class="edit-btn">Редактировать</button>
         </div>
     </div>
@@ -40,4 +40,8 @@
 <div class="back-btn-container">
     <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn">Вернуться обратно</a>
 </div>
+    {% for field in form %}
+    	{% csrf_token %}
+        {{ field }}
+    {% endfor %}
 {% endblock %}
