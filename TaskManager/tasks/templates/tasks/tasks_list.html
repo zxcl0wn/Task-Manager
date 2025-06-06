@@ -1,25 +1,35 @@
-
 {% extends 'base.html' %}
 {% load static %}
 
 {% block content %}
+<section class="taskm-section">
+    <h2 class="taskm-heading">Мои задачи:</h2>
 
-<section class="tasks-section">
-    <h2>Мои задачи:</h2>
-    <div class="tasks-container" id="tasksContainer">
-        <!-- Твои карточки -->
+    <div class="taskm-container" id="taskmContainer">
         {% for task in tasks %}
-            <a href="{% url 'app_tasks:task_view' task.slug %}"><li>{{ task }}</li></a>
+        <a href="{% url 'app_tasks:task_view' task.slug %}" class="taskm-card">
+            <div class="taskm-content">
+                <p class="taskm-title"><strong>Название:</strong> {{ task.title }}</p>
+                <button class="taskm-subtask-btn">Добавить подзадачи</button>
+                <p class="taskm-meta">Срок сдачи: {{ task.due_date|date:"d.m.Y" }}</p>
+                <p class="taskm-meta">Приоритет: {{ task.priority }}</p>
+                <span class="taskm-status">В работе</span>
+            </div>
+        </a>
         {% endfor %}
 
-    </div>
-    <!-- Кнопки навигации -->
-    <div class="pagination">
-        <button class="page-btn" onclick="scrollTasks(-1)">&larr;</button>
-        <button class="page-btn" onclick="scrollTasks(1)">&rarr;</button>
+        <!-- Карточка добавления задачи со ссылкой -->
+        <a href="{% url 'app_tasks:task_form' %}" class="taskm-card taskm-add-card">
+            <div class="taskm-add-btn">+</div>
+        </a>
     </div>
 
-    <div class="filters">
+    <div class="taskm-pagination">
+        <button class="taskm-page-btn" onclick="scrollTasks(-1)">&larr;</button>
+        <button class="taskm-page-btn" onclick="scrollTasks(1)">&rarr;</button>
+    </div>
+
+    <div class="taskm-filters">
         <h3>Фильтрация по:</h3>
         <label><input type="radio" name="filter" /> Приоритету</label>
         <label><input type="radio" name="filter" /> Сроку сдачи</label>
@@ -27,6 +37,5 @@
         <label><input type="radio" name="filter" /> В работе</label>
     </div>
 </section>
-
-
 {% endblock %}
+

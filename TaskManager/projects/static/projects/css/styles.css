@@ -567,7 +567,6 @@ h2 {
     width: 100%;
 }
 
-
 .notification-box {
     border: 1px solid #e58a8a;
     border-radius: 6px;
@@ -580,3 +579,141 @@ h2 {
     display: block;
 }
 
+.taskm-section {
+    padding: 20px 40px;
+}
+
+.taskm-heading {
+    margin: 40px 0 30px 40px;
+}
+
+.taskm-container {
+    display: flex;
+    gap: 40px; /* здесь отступы между карточками */
+    overflow-x: auto;
+    padding: 0 40px 20px;
+}
+
+
+.taskm-card {
+    border: 1px solid #f44336;
+    border-radius: 10px;
+    width: 250px;
+    min-height: 300px;
+    padding: 50px;
+    text-decoration: none;
+    color: inherit;
+    transition: box-shadow 0.2s ease;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.taskm-card:hover {
+    box-shadow: 0 0 10px rgba(244, 67, 54, 0.3);
+}
+
+.taskm-content {
+    text-align: center;
+}
+
+.taskm-title {
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.taskm-subtask-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 15px 25px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 10px;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.taskm-meta {
+    margin: 5px 0;
+    color: #595959;
+}
+
+.taskm-status {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 15px 20px;
+    border: 1px solid #f44336;
+    border-radius: 10px;
+    color: #f44336;
+    font-size: 14px;
+}
+
+.taskm-add-card {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+    cursor: pointer;
+}
+
+.taskm-add-btn {
+    width: 60px;
+    height: 60px;
+    background-color: #f44336;
+    border-radius: 50%;
+    font-size: 36px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.taskm-add-btn:hover {
+    background-color: #d32f2f;
+}
+
+.taskm-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* вот тут будет работать gap */
+    margin-top: 20px;
+}
+
+
+.taskm-page-btn {
+    background-color: white;
+    border: 1px solid #f44336;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    gap: 50px;
+    color: #f44336;
+    font-size: 20px;
+    cursor: pointer;
+}
+.taskm-page-btn {
+    margin: 0 40px; /* Добавляет отступы слева и справа у каждой кнопки */
+}
+
+
+.taskm-page-btn:hover {
+    background-color: #f44336;
+    color: white;
+}
+
+.taskm-filters {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.taskm-filters h3 {
+    margin-bottom: 10px;
+}
+
+.taskm-filters label {
+    margin: 0 15px;
+}
