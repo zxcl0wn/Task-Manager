@@ -27,6 +27,14 @@ def task_view(request, task_slug):
     task = Task.objects.get(slug=task_slug)
     form = TaskForm(instance=task)
 
+    if request.method == "POST":
+        form = TaskForm(request.POST, instance=task)
+        if form.is_valid():
+            form.save()
+            return redirect('app_tasks:tasks_list')
+    else:
+        form = TaskForm(instance=task)
+
     context = {
         'task': task,
         'form': form
