@@ -5,6 +5,17 @@ from .forms import TaskForm
 
 def tasks_list(request):
     tasks = Task.objects.all()
+    filter_type = request.GET.get('filter')
+
+    if filter_type == 'priority':
+        tasks = tasks.order_by('priority')
+    elif filter_type == 'deadline':
+        tasks = tasks.order_by('deadline_date')
+    elif filter_type == 'done':
+        tasks = tasks.filter(status='DONE')
+    elif filter_type == 'in_progress':
+        tasks = tasks.filter(status='INPR')
+
     context = {
         'tasks': tasks,
     }

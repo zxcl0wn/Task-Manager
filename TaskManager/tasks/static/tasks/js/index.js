@@ -11,4 +11,12 @@ function scrollTasks(direction) {
     });
 }
 
-// alert("Привет");
+document.addEventListener("DOMContentLoaded", function() {
+    let form = document.getElementById('filter-form');
+    const radios = form.querySelectorAll('input[type="radio"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            form.submit();
+        });
+    });
+});

@@ -9,7 +9,7 @@
         {% for task in tasks %}
         <a href="{% url 'app_tasks:task_view' task.slug %}" class="taskm-card">
             <div class="taskm-content">
-                <p class="taskm-title"><strong>Название:</strong> {{ task.title }}</p>
+                <p class="taskm-title"><strong></strong> {{ task.title }}</p>
                 <button class="taskm-subtask-btn">Добавить подзадачи</button>
                 <p class="taskm-meta">Срок сдачи: {{ task.deadline_date }}</p>
                 <p class="taskm-meta">Приоритет: {{ task.get_priority_display }}</p>
@@ -29,13 +29,21 @@
         <button class="taskm-page-btn" onclick="scrollTasks(1)">&rarr;</button>
     </div>
 
-    <div class="taskm-filters">
+{#    <div class="taskm-filters">#}
+{#        <h3>Фильтрация по:</h3>#}
+{#        <label><input type="radio" name="filter" /> Приоритету</label>#}
+{#        <label><input type="radio" name="filter" /> Сроку сдачи</label>#}
+{#        <label><input type="radio" name="filter" /> Выполненные</label>#}
+{#        <label><input type="radio" name="filter" /> В работе</label>#}
+{#    </div>#}
+    <form method="get" class="taskm-filters" id="filter-form">
         <h3>Фильтрация по:</h3>
-        <label><input type="radio" name="filter" /> Приоритету</label>
-        <label><input type="radio" name="filter" /> Сроку сдачи</label>
-        <label><input type="radio" name="filter" /> Выполненные</label>
-        <label><input type="radio" name="filter" /> В работе</label>
-    </div>
+        <label><input type="radio" name="filter" value="priority" {% if request.GET.filter == 'priority' %}checked{% endif %}> Приоритету</label>
+        <label><input type="radio" name="filter" value="deadline" {% if request.GET.filter == 'deadline' %}checked{% endif %}> Сроку сдачи</label>
+        <label><input type="radio" name="filter" value="done" {% if request.GET.filter == 'done' %}checked{% endif %}> Выполненные</label>
+        <label><input type="radio" name="filter" value="in_progress" {% if request.GET.filter == 'in_progress' %}checked{% endif %}> В работе</label>
+    </form>
+
 </section>
 {% endblock %}
 
