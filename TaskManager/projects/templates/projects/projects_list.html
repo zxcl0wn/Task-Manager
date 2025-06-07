@@ -5,7 +5,7 @@
 <section class="projects-section">
     <h2 class="projects-title">Мои проекты:</h2>
 
-    <div class="projects-container">
+    <div class="projects-container" id="projectsContainer">
         {% for project in projects %}
         <div class="project-card">
             <p class="project-title"><strong>Название:</strong></p>
@@ -25,23 +25,22 @@
                 {{ project.get_status_display }}
             </span>
 
-            <a href="#" class="st-btn">В работ</a>
+            <a href="#" class="st-btn">В работе</a>
         </div>
         {% endfor %}
 
-        <!-- Карточка добавления проекта -->
-        <!-- Карточка добавления проекта -->
         <div class="project-card project-add">
             <div class="project-add-btn">+</div>
             <p class="project-add-text">Создать проект</p>
         </div>
-
     </div>
 
-    <!-- Стрелки -->
     <div class="projects-arrows">
-        <button class="projects-arrow">&larr;</button>
-        <button class="projects-arrow">&rarr;</button>
+        <button class="projects-arrow" onclick="scrollProjects(-1)">&larr;</button>
+        <button class="projects-arrow" onclick="scrollProjects(1)">&rarr;</button>
     </div>
 </section>
+
+<!-- Подключение JS -->
+<script src="{% static 'projects/js/projects_scroll.js' %}"></script>
 {% endblock %}
