@@ -2,11 +2,46 @@
 {% load static %}
 
 {% block content %}
-	<h1>Список проектов</h1>
-    <ul>
+<section class="projects-section">
+    <h2 class="projects-title">Мои проекты:</h2>
+
+    <div class="projects-container">
         {% for project in projects %}
-        	<li><a href="{% url 'app_projects:project' project.slug %}">{{ project }}</a></li>
+        <div class="project-card">
+            <p class="project-title"><strong>Название:</strong></p>
+            <p class="project-description">{{ project.description }}</p>
+
+            <ul class="project-tasks">
+                {% for task in project.tasks.all %}
+                <li>{{ task.title }}</li>
+                {% endfor %}
+            </ul>
+
+            <a href="#" class="project-btn">Добавить задачи</a>
+
+            <p class="project-meta">Статус проекта: {{ project.get_visibility_display }}</p>
+            
+            <span class="project-status {% if project.status == 'active' %}in-progress{% else %}completed{% endif %}">
+                {{ project.get_status_display }}
+            </span>
+
+            <a href="#" class="st-btn">В работ</a>
+        </div>
         {% endfor %}
 
-    </ul>
+        <!-- Карточка добавления проекта -->
+        <!-- Карточка добавления проекта -->
+        <div class="project-card project-add">
+            <div class="project-add-btn">+</div>
+            <p class="project-add-text">Создать проект</p>
+        </div>
+
+    </div>
+
+    <!-- Стрелки -->
+    <div class="projects-arrows">
+        <button class="projects-arrow">&larr;</button>
+        <button class="projects-arrow">&rarr;</button>
+    </div>
+</section>
 {% endblock %}
