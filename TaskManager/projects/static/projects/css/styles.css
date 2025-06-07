@@ -262,7 +262,6 @@ h2 {
     background-color: #fff;
 }
 
-
 .task-card h3 {
     margin-top: 6px;
     text-align: center;
@@ -331,19 +330,37 @@ h2 {
     background-color: #fff;
     color: #f44336;
 }
+.task-card {
+    width: 90%;
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 30px 20px;
+    min-height: 500px;
+    border: 1px solid #f44336;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.task-card h3 {
+    text-align: center;
+    font-size: 28px;
+    margin-top: 6px;
+}
+
 .task-layout {
     display: flex;
-    gap: 20px;
     justify-content: space-between;
+    gap: 20px;
     flex-wrap: wrap;
+    align-items: flex-start;
 }
 
 .subtasks {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    flex: 1;
-    min-width: 120px;
+    width: 160px;
     margin-top: 45px;
 }
 
@@ -356,6 +373,13 @@ h2 {
     cursor: pointer;
     font-weight: 500;
     font-size: 14px;
+}
+
+.pencil-symbol {
+    font-size: 20px;
+    margin-left: 6px;
+    color: #f44336;
+    vertical-align: middle;
 }
 
 .subtask-control-btn {
@@ -372,7 +396,7 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 12px;
-    flex: 2;
+    width: 400px;
     min-width: 280px;
 }
 
@@ -380,6 +404,19 @@ h2 {
     font-family: Inter;
     text-align: center;
     color: #444;
+}
+
+.task-title {
+    width: 50%;
+    height: 20px;
+    border: 1px solid #f44336;
+    border-radius: 6px;
+    padding: 8px;
+    font-family: Inter;
+    font-size: 24px;
+    font-weight: 700;
+    display: block;
+    margin: 0 auto;
 }
 
 .task-textarea {
@@ -390,27 +427,53 @@ h2 {
     padding: 8px;
     font-family: Inter;
     display: block;
-    margin: 0 auto; 
+    margin: 0 auto;
 }
 
+.status-btn {
+    background-color: white;
+    color: #f44336;
+    border: 2px solid #f44336;
+    padding: 15px 30px;
+    cursor: pointer;
+    border-radius: 50px;
+    font-weight: 600;
+    margin-top: 40px;
+}
 
-.task-buttons {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
+.status-btn:hover {
+    background-color: #f44336;
+    color: white;
 }
 
 .delete-btn {
     background-color: #f44336;
     color: #ffffff;
     border: 2px solid;
-    width: 100px; 
+    width: 100px;
     text-align: center;
-    padding: 8px 0; 
+    padding: 8px 0;
     border-radius: 50px;
-    margin-top: 40px;
+    margin-top: 10px;
     font-weight: 600;
     margin-left: 450px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.save-btn {
+    background-color: #f44336;
+    color: #ffffff;
+    border: 2px solid;
+    width: 250px;
+    text-align: center;
+    padding: 15px 10px;
+    border-radius: 50px;
+    margin: 40px auto; /* центрирует по горизонтали */
+    font-weight: 600;
+    font-family: Inter;
+    font-size: 14px;
+    cursor: pointer;
+    display: block; /* важно для margin auto */
 }
 
 .task-meta {
@@ -419,21 +482,23 @@ h2 {
     display: flex;
     flex-direction: column;
     gap: 5px;
-    margin-right: 5px;
     margin-top: 45px;
-    font-family: Inter;
     color: #333;
+    font-family: Inter;
 }
 
 .edit-btn {
     background-color: #f44336;
     color: white;
     border: none;
-    padding: 10px 16px;
+    padding: 8px 10px;
     border-radius: 6px;
     cursor: pointer;
     font-weight: 500;
     font-size: 14px;
+    text-align: center;
+    display: inline-block; /* добавлено! */
+    text-decoration: none; /* убирает подчёркивание, если вдруг появится */
 }
 
 .back-btn-container {
@@ -454,7 +519,6 @@ h2 {
     cursor: pointer;
     margin-top: 40px;
 }
-
 
 .add-task {
     display: flex;
@@ -541,14 +605,14 @@ h2 {
     font-size: 16px;
     margin-top: 10px;
 }
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap");
 
 .notifications-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 10px 20px;
-    font-family: 'Inter', sans-serif;
+    font-family: "Inter", sans-serif;
 }
 
 .notif-title {
@@ -593,7 +657,6 @@ h2 {
     overflow-x: auto;
     padding: 0 40px 20px;
 }
-
 
 .taskm-card {
     border: 1px solid #f44336;
@@ -683,7 +746,6 @@ h2 {
     margin-top: 20px;
 }
 
-
 .taskm-page-btn {
     background-color: white;
     border: 1px solid #f44336;
@@ -698,7 +760,6 @@ h2 {
 .taskm-page-btn {
     margin: 0 40px; /* Добавляет отступы слева и справа у каждой кнопки */
 }
-
 
 .taskm-page-btn:hover {
     background-color: #f44336;
@@ -716,4 +777,190 @@ h2 {
 
 .taskm-filters label {
     margin: 0 15px;
+}
+
+.projects-section {
+    padding: 20px 40px;
+}
+
+.projects-heading {
+    margin: 40px 0 30px 40px;
+    font-size: 28px;
+}
+
+.projects-container {
+    display: flex;
+    gap: 40px;
+    overflow-x: auto;
+    padding: 0 40px 20px;
+}
+
+.project-card {
+    border: 1px solid #f44336;
+    border-radius: 10px;
+    width: 250px;
+    min-height: 400px;
+    padding: 50px;
+    text-align: center;
+    color: #333;
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.project-title {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.project-description {
+    color: #595959;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.project-tasks {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 15px 0;
+    font-size: 14px;
+}
+
+.project-btn {
+    background-color: #f44336;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 25px;
+}
+
+.project-status {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.project-tag {
+    padding: 8px 16px;
+    font-size: 12px;
+    border-radius: 20px;
+    border: 1px solid #f44336;
+    display: inline-block;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.project-tag.active {
+    background: white;
+    color: #f44336;
+}
+
+.project-tag.done {
+    background: #f44336;
+    color: white;
+}
+
+.project-card.project-add {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.project-add-btn {
+    width: 60px;
+    height: 60px;
+    background-color: #f44336;
+    border-radius: 50%;
+    font-size: 36px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    margin: 0 auto 15px;
+}
+
+.project-add-text {
+    font-size: 14px;
+    color: #444;
+}
+
+.projects-pagination {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 40px;
+}
+
+.projects-arrow {
+    background-color: white;
+    border: 1px solid #f44336;
+    color: #f44336;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    cursor: pointer;
+}
+.project-meta {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: -20px;
+    font-weight: bold;
+}
+
+.st-btn {
+    background-color: #ffffff;
+    color: #f44336;
+    padding: 8px 4px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 25px;
+    border: 2px solid #f44336; /* добавлено */
+}
+.project-card.project-add {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+    border: 1px solid #f44336;
+    border-radius: 10px;
+    width: 250px;
+    min-height: 400px;
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    color: #444;
+}
+.project-add-btn {
+    width: 80px;
+    height: 80px;
+    background-color: #f44336;
+    border-radius: 50%;
+    font-size: 48px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+}
+
+.project-add-btn:hover {
+    transform: scale(1.05);
+}
+
+.project-add-text {
+    font-size: 14px;
+    color: #555;
+    font-weight: 500;
 }
