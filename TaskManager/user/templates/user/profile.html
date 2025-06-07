@@ -6,4 +6,8 @@
     {# TODO: добавить кнопку для выхода пользователя из системы #}
     <h2>Ваш никнейм: {{ user }}</h2>
     <h2>Ваш адрес электронной почты: {{ user.email }}</h2>
+    <form method="post" action="{% url 'app_user:logout' %}">
+        {% csrf_token %}
+        <button type="submit">Выйти</button>
+    </form>
 {% endblock %}
