@@ -40,4 +40,8 @@
 <div class="back-btn-container">
     <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn">Вернуться обратно</a>
 </div>
+    {% for field in form %}
+    	{% csrf_token %}
+        {{ field }}
+    {% endfor %}
 {% endblock %}

@@ -1,7 +1,6 @@
 from django.db import models
 from django.template import defaultfilters
 from unidecode import unidecode
-
 from projects.models import Project
 
 

@@ -6,7 +6,13 @@ from user.models import User
 
 
 class Project(models.Model):
+    STATUS_CHOICES = [
+        ("PUBLIC", "публичный"),
+        ("PRIVATE", "приватный"),
+    ]
+
     title = models.CharField(max_length=40, null=True, unique=True)
+    status = models.CharField(max_length=20, null=True, choices=STATUS_CHOICES, default="PUBLIC")
     slug = models.SlugField(max_length=40, unique=True, null=True, blank=True)
     description = models.TextField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
