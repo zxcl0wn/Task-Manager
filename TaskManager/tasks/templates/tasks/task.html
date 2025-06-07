@@ -1,47 +1,59 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block content %}
 <div class="task-card">
-    <h3>{{ task.title }}</h3>
+    <form method="post">
+        {% csrf_token %}
+        <div class="task-layout">
+            <!-- Подзадачи -->
+            <div class="subtasks">
+                <button class="subtask-btn">
+                    Подзадача 1 <span class="pencil-symbol">✎</span>
+                </button>
 
-    <div class="task-layout">
-        <!-- Подзадачи -->
-        <div class="subtasks">
-            <button class="subtask-btn">Подзадача 1</button>
+                <a class="subtask-control-btn">Добавить подзадачи</a>
+            </div>
 
-            <button class="subtask-control-btn">Изменить подзадачи</button>
-            <button class="subtask-control-btn">Добавить подзадачи</button>
-            <button class="subtask-control-btn">Удалить подзадачи</button>
+            <!-- Описание и комментарий -->
+            <div class="task-info">
+                {{ form.title }}
+                <label for="{{ form.description.id_for_label }}"
+                    >{{ form.description.label }}</label
+                >
+                {{ form.description }}
+
+                <label for="{{ form.comment.id_for_label }}"
+                    >{{ form.comment.label }}</label
+                >
+                {{ form.comment }}
+
+                <label for="{{ form.status.id_for_label }}"
+                    >{{ form.status.label }}</label
+                >
+                {{ form.status }}
+
+                <button type="submit" class="save-btn">Сохранить</button>
+                <a class="delete-btn">Удалить</a>
+            </div>
+
+            <!-- Срок и приоритет -->
+            <div class="task-meta">
+                <label for="{{ form.deadline_date.id_for_label }}"
+                    >{{ form.deadline_date.label }}</label
+                >
+                {{ form.deadline_date }}
+
+                <label for="{{ form.priority.id_for_label }}"
+                    >{{ form.priority.label }}</label
+                >
+                {{ form.priority }}
+            </div>
         </div>
-
-        <!-- Описание и комментарий -->
-        <div class="task-info">
-            <label>Описание задачи</label>
-            <textarea class="task-textarea">{{ task.description }}</textarea>
-
-            <label>Комментарий:</label>
-            <textarea class="task-textarea">{{ task.comment }}</textarea>
-
-            <button class="status-btn">{{ task.get_status_display }}</button>
-            <button class="delete-btn">Удалить</button>
-        </div>
-
-        <!-- Срок и приоритет -->
-        <div class="task-meta">
-            <p>Срок сдачи: {{ task.deadline_date }}</p>
-            <p>Приоритет: {{ task.get_priority_display }}</p>
-            <button class="edit-btn">Редактировать</button>
-        </div>
-    </div>
+    </form>
 </div>
 
 <!-- Кнопка назад -->
 <div class="back-btn-container">
-    <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn">Вернуться обратно</a>
+    <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn"
+        >Вернуться обратно</a
+    >
 </div>
-    {% for field in form %}
-    	{% csrf_token %}
-        {{ field }}
-    {% endfor %}
 {% endblock %}
