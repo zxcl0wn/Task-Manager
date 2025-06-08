@@ -16,7 +16,7 @@ h2 {
     margin-top: 40px;
     margin-bottom: 40px;
 }
-
+/* ШАПКА */
 .navbar {
     display: flex;
     justify-content: space-between;
@@ -66,7 +66,7 @@ h2 {
     color: #e53935;
     border-bottom: 2px solid #e53935;
 }
-
+/* ГЛАВНАЯ */
 .features-section {
     display: flex;
     padding: 40px;
@@ -150,7 +150,7 @@ h2 {
     margin-top: -470px;
     margin-left: 650px;
 }
-
+/* РЕГИСТРАЦИЯ */
 .auth-section {
     display: flex;
     justify-content: center;
@@ -237,7 +237,7 @@ h2 {
 .auth-form .register-row p {
     margin: 0;
 }
-
+/* БЛОК ФОРМЫ */
 .tasks-section {
     padding: 20px 40px;
 }
@@ -376,12 +376,17 @@ h2 {
 }
 
 .pencil-symbol {
-    font-size: 20px;
+    font-size: 15px;
     margin-left: 6px;
     color: #f44336;
     vertical-align: middle;
 }
-
+.trash-symbol {
+    font-size: 15px;
+    margin-left: 6px;
+    color: #f44336;
+    vertical-align: middle;
+}
 .subtask-control-btn {
     background-color: #f44336;
     color: white;
@@ -438,7 +443,7 @@ h2 {
     cursor: pointer;
     border-radius: 50px;
     font-weight: 600;
-    margin-top: 40px;
+    margin-top: 10px;
 }
 
 .status-btn:hover {
@@ -497,8 +502,8 @@ h2 {
     font-weight: 500;
     font-size: 14px;
     text-align: center;
-    display: inline-block; /* добавлено! */
-    text-decoration: none; /* убирает подчёркивание, если вдруг появится */
+    display: inline-block; 
+    text-decoration: none; 
 }
 
 .back-btn-container {
@@ -574,7 +579,7 @@ h2 {
 .page-btn:hover {
     background-color: #d32f2f;
 }
-
+/* ФИЛЬТРАЦИЯ */
 .filters {
     padding: 20px 40px;
 }
@@ -586,10 +591,9 @@ h2 {
 .filters label {
     margin-right: 20px;
 }
-
+/* РЕГИСТРАЦИЯ */
 .register-row {
-    gap: 0px;
-    /* Расстояние между текстом и ссылкой */
+    gap: 0px;   
     margin-top: 40px;
 }
 
@@ -605,8 +609,8 @@ h2 {
     font-size: 16px;
     margin-top: 10px;
 }
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400&display=swap");
 
+/* УВЕДОМЛЕНИЯ */
 .notifications-container {
     display: flex;
     flex-direction: column;
@@ -642,7 +646,7 @@ h2 {
     text-align: center;
     display: block;
 }
-
+/* БЛОК ПРОСМОТРА ЛИСТА ЗАДАЧ */
 .taskm-section {
     padding: 20px 40px;
 }
@@ -653,7 +657,7 @@ h2 {
 
 .taskm-container {
     display: flex;
-    gap: 40px; /* здесь отступы между карточками */
+    gap: 40px; 
     overflow-x: auto;
     padding: 0 40px 20px;
 }
@@ -779,22 +783,16 @@ h2 {
     margin: 0 15px;
 }
 
+/* БЛОК ПРОЕКТА ЛИСТА */
 .projects-section {
     padding: 20px 40px;
 }
-
-.projects-heading {
-    margin: 40px 0 30px 40px;
-    font-size: 28px;
-}
-
 .projects-container {
     display: flex;
     gap: 40px;
     overflow-x: auto;
     padding: 0 40px 20px;
 }
-
 .project-card {
     border: 1px solid #f44336;
     border-radius: 10px;
@@ -808,26 +806,22 @@ h2 {
     flex-direction: column;
     justify-content: space-between;
 }
-
 .project-title {
     font-weight: bold;
     font-size: 24px;
     margin-bottom: 10px;
 }
-
 .project-description {
     color: #595959;
     font-size: 14px;
     margin-bottom: 15px;
 }
-
 .project-tasks {
     list-style: none;
     padding: 0;
     margin: 0 0 15px 0;
     font-size: 14px;
 }
-
 .project-btn {
     background-color: #f44336;
     color: white;
@@ -839,13 +833,11 @@ h2 {
     display: inline-block;
     margin-bottom: 25px;
 }
-
 .project-status {
     font-size: 13px;
     color: #666;
     margin-bottom: 5px;
 }
-
 .project-tag {
     padding: 8px 16px;
     font-size: 12px;
@@ -855,23 +847,19 @@ h2 {
     width: fit-content;
     margin: 0 auto;
 }
-
 .project-tag.active {
     background: white;
     color: #f44336;
 }
-
 .project-tag.done {
     background: #f44336;
     color: white;
 }
-
 .project-card.project-add {
     align-items: center;
     justify-content: center;
     text-align: center;
 }
-
 .project-add-btn {
     width: 60px;
     height: 60px;
@@ -885,27 +873,31 @@ h2 {
     text-decoration: none;
     margin: 0 auto 15px;
 }
-
 .project-add-text {
     font-size: 14px;
     color: #444;
 }
-
-.projects-pagination {
+.projects-arrows {
+    margin-top: 20px;
     display: flex;
-    justify-content: space-between;
-    margin: 20px 40px;
+    justify-content: center;
+    gap: 90px;
 }
-
 .projects-arrow {
-    background-color: white;
-    border: 1px solid #f44336;
-    color: #f44336;
+    background-color: #f44336;
+    color: white;
+    border: none;
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    font-size: 20px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
     cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+}
+.projects-arrow:hover {
+    background-color: white;
+    color: #f44336;
+    border: 1px solid #f44336;
 }
 .project-meta {
     font-size: 14px;
@@ -913,7 +905,6 @@ h2 {
     margin-bottom: -20px;
     font-weight: bold;
 }
-
 .st-btn {
     background-color: #ffffff;
     color: #f44336;
@@ -954,13 +945,12 @@ h2 {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease;
 }
-
 .project-add-btn:hover {
     transform: scale(1.05);
 }
-
 .project-add-text {
     font-size: 14px;
     color: #555;
     font-weight: 500;
 }
+/*БЛОК ПРОЕКТА ПРОСМОТРА */

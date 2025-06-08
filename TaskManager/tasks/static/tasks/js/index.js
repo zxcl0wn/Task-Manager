@@ -10,6 +10,15 @@ function scrollTasks(direction) {
         behavior: "smooth",
     });
 }
+function scrollProjects(direction) {
+    const container = document.getElementById('projectsContainer');
+    const scrollAmount = 300; // пикселей за один клик
+    container.scrollBy({
+        left: direction * scrollAmount,
+        behavior: 'smooth'
+    });
+}
+// alert("Привет");
 
 document.addEventListener("DOMContentLoaded", function() {
     let form = document.getElementById('filter-form');

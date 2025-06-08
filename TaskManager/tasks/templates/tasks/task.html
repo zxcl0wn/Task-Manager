@@ -1,12 +1,18 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
 <div class="task-card">
     <form method="post">
         {% csrf_token %}
         <div class="task-layout">
+
             <!-- Подзадачи -->
             <div class="subtasks">
                 <button class="subtask-btn">
-                    Подзадача 1 <span class="pencil-symbol">✎</span>
+                    Подзадача 1
+                    <span class="pencil-symbol">✎</span>
+                    <span class="trash-symbol">🗑</span>
                 </button>
 
                 <a class="subtask-control-btn">Добавить подзадачи</a>
@@ -15,36 +21,25 @@
             <!-- Описание и комментарий -->
             <div class="task-info">
                 {{ form.title }}
-                <label for="{{ form.description.id_for_label }}"
-                    >{{ form.description.label }}</label
-                >
+
+                <label for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
                 {{ form.description }}
 
-                <label for="{{ form.comment.id_for_label }}"
-                    >{{ form.comment.label }}</label
-                >
+                <label for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
                 {{ form.comment }}
 
-                <label for="{{ form.status.id_for_label }}"
-                    >{{ form.status.label }}</label
-                >
+                <label for="{{ form.status.id_for_label }}">{{ form.status.label }}</label>
                 {{ form.status }}
 
                 <button type="submit" class="save-btn">Сохранить</button>
             </div>
 
-            <!-- Срок и приоритет -->
+            <!-- Срок и приоритет (без формы) -->
             <div class="task-meta">
-                <label for="{{ form.deadline_date.id_for_label }}"
-                    >{{ form.deadline_date.label }}</label
-                >
-                {{ form.deadline_date }}
-
-                <label for="{{ form.priority.id_for_label }}"
-                    >{{ form.priority.label }}</label
-                >
-                {{ form.priority }}
+                <p>Срок сдачи: {{ task.deadline_date }}</p>
+                <p>Приоритет: {{ task.get_priority_display }}</p>
             </div>
+
         </div>
     </form>
     <form method="POST" action="{% url 'app_tasks:task_delete' task.slug %}">
@@ -56,8 +51,7 @@
 
 <!-- Кнопка назад -->
 <div class="back-btn-container">
-    <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn"
-        >Вернуться обратно</a
-    >
+    <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn">Вернуться обратно</a>
 </div>
 {% endblock %}
+
