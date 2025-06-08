@@ -1,7 +1,6 @@
 from django.db import models
 from django.template import defaultfilters
 from unidecode import unidecode
-from projects.models import Project
 
 
 class Task(models.Model):
@@ -18,7 +17,7 @@ class Task(models.Model):
 
     title = models.CharField(max_length=20, blank=False, unique=True)
     slug = models.SlugField(max_length=20, null=True, blank=True, unique=True)
-    project_id = models.ForeignKey(Project, on_delete=models.CASCADE)
+    project = models.ForeignKey('projects.Project', on_delete=models.CASCADE)
     description = models.TextField(blank=True)
     priority = models.CharField(max_length=10, choices=PRIORITY_CHOICES, default="MEDIUM")
     comment = models.TextField(blank=True)

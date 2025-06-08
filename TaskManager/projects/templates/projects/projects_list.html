@@ -8,7 +8,8 @@
     <div class="projects-container" id="projectsContainer">
         {% for project in projects %}
         <div class="project-card">
-            <p class="project-title"><strong>Название:</strong></p>
+            <a href="{% url 'app_projects:project_view' project.slug %}"></a>
+            <p class="project-title"><strong>{{ project.title }}</strong></p>
             <p class="project-description">{{ project.description }}</p>
 
             <ul class="project-tasks">
@@ -25,14 +26,18 @@
                 {{ project.get_status_display }}
             </span>
 
-            <a href="#" class="st-btn">В работе</a>
+            <a href="#" class="st-btn">{{ project.get_is_completed_display }}</a>
         </div>
         {% endfor %}
 
-        <div class="project-card project-add">
-            <div class="project-add-btn">+</div>
-            <p class="project-add-text">Создать проект</p>
-        </div>
+{#        <div class="project-card project-add">#}
+{#            <div class="project-add-btn">+</div>#}
+{#            <p class="project-add-text">Создать проект</p>#}
+{#        </div>#}
+            <a href="{% url 'app_projects:create_project' %}" class="project-card project-add">
+                <div class="project-add-btn">+</div>
+                <p class="project-add-text">Создать проект</p>
+            </a>
     </div>
 
     <div class="projects-arrows">
