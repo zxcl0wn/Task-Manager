@@ -25,7 +25,6 @@ def tasks_list(request):
 
 def task_view(request, task_slug):
     task = Task.objects.get(slug=task_slug)
-    form = TaskForm(instance=task)
 
     if request.method == "POST":
         form = TaskForm(request.POST, instance=task)
@@ -45,13 +44,14 @@ def task_view(request, task_slug):
 
 def task_create(reqeust):
     context = {
-
     }
 
     return render(reqeust, 'tasks/task_form.html', context=context)
 
 
 def task_delete(request, task_slug):
-    task = Task.objects.get(slug=task_slug).delete()
-
-    return redirect('app_tasks:tasks_list')
+    task = Task.objects.get(slug=task_slug)
+    print(f'!!!{request.method}!!!')
+    if request.method == "POST":
+        task.delete()
+        return redirect('app_tasks:tasks_list')

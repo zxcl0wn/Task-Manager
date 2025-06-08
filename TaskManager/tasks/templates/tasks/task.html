@@ -31,7 +31,6 @@
                 {{ form.status }}
 
                 <button type="submit" class="save-btn">Сохранить</button>
-                <a class="delete-btn">Удалить</a>
             </div>
 
             <!-- Срок и приоритет -->
@@ -47,6 +46,11 @@
                 {{ form.priority }}
             </div>
         </div>
+    </form>
+    <form method="POST" action="{% url 'app_tasks:task_delete' task.slug %}">
+        {% csrf_token %}
+        <input type="submit" value="Удалить">
+{#        <a class="delete-btn" type="submit">Удалить</a>#}
     </form>
 </div>
 
