@@ -13,6 +13,7 @@
                 <button class="taskm-subtask-btn">Добавить подзадачи</button>
                 <p class="taskm-meta">Срок сдачи: {{ task.deadline_date }}</p>
                 <p class="taskm-meta">Приоритет: {{ task.get_priority_display }}</p>
+                <p class="taskm-meta">Проект: {{ task.project }}</p>
                 <span class="taskm-status">{{ task.get_status_display }}</span>
             </div>
         </a>

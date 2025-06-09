@@ -3,48 +3,52 @@
 
 {% block content %}
 <div class="task-card">
-    <h3>{{ task.title }}</h3>
+    <form method="post">
+        {% csrf_token %}
+        {% for field in form %}
+            {{ field.label }}
+            {{ field }}
+        {% endfor %}
+        <button type="submit" class="save-btn">Сохранить</button>
+    </form>
 
-    <div class="task-layout">
-        <!-- Подзадачи -->
-        <div class="subtasks">
-            <button class="subtask-btn">
-                Подзадача 1 <span class="pencil-symbol">✎</span>
-            </button>
 
-            <button class="subtask-control-btn">Добавить подзадачи</button>
-        </div>
+{#    <h3>{{ task.title }}</h3>#}
+{##}
+{#    <div class="task-layout">#}
+{#        <!-- Подзадачи -->#}
+{#        <div class="subtasks">#}
+{#            <button class="subtask-btn">#}
+{#                Подзадача 1 <span class="pencil-symbol">✎</span>#}
+{#            </button>#}
+{##}
+{#            <button class="subtask-control-btn">Добавить подзадачи</button>#}
+{#        </div>#}
+{##}
+{#        <!-- Описание и комментарий -->#}
+{#        <div class="task-info">#}
+{#            <label>Описание задачи</label>#}
+{#            <textarea class="task-textarea">{{ task.description }}</textarea>#}
+{##}
+{#            <label>Комментарий:</label>#}
+{#            <textarea class="task-textarea">{{ task.comment }}</textarea>#}
+{##}
+{#            <button class="status-btn">{{ task.get_status_display }}</button>#}
 
-        <!-- Описание и комментарий -->
-        <div class="task-info">
-            <label>Описание задачи</label>
-            <textarea class="task-textarea">{{ task.description }}</textarea>
-
-            <label>Комментарий:</label>
-            <textarea class="task-textarea">{{ task.comment }}</textarea>
-
-            <button class="status-btn">{{ task.get_status_display }}</button>
-			<button class="save-btn">Сохранить</button>
-			<button class="delete-btn">Удалить</button>
-        </div>
-
-        <!-- Срок и приоритет -->
-        <div class="task-meta">
-            <p>Срок сдачи: {{ task.deadline_date }}</p>
-            <p>Приоритет: {{ task.get_priority_display }}</p>
-        </div>
-    </div>
+{#			<button class="delete-btn">Удалить</button>#}
+{#        </div>#}
+{##}
+{#        <!-- Срок и приоритет -->#}
+{#        <div class="task-meta">#}
+{#            <p>Срок сдачи: {{ task.deadline_date }}</p>#}
+{#            <p>Приоритет: {{ task.get_priority_display }}</p>#}
+{#        </div>#}
+{#    </div>#}
 
 </div>
 
-<!-- Кнопка назад -->
-<div class="back-btn-container">
-    <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn">Вернуться обратно</a>
-</div>
-
-<!-- Форма -->
-{% for field in form %}
-    {% csrf_token %}
-    {{ field }}
-{% endfor %}
+{#<!-- Кнопка назад -->#}
+{#<div class="back-btn-container">#}
+{#    <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn">Вернуться обратно</a>#}
+{#</div>#}
 {% endblock %}
