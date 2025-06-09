@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Task
-from .forms import TaskForm
+from .forms import TaskForm, TaskCreateForm
 
 
 def tasks_list(request):
@@ -25,12 +25,17 @@ def tasks_list(request):
 
 def task_view(request, task_slug):
     task = Task.objects.get(slug=task_slug)
-
     if request.method == "POST":
-        form = TaskForm(request.POST, instance=task)
+        post_data = request.POST.copy()
+        post_data['priority'] = task.priority
+        post_data['deadline_date'] = task.deadline_date
+        post_data['project'] = task.project
+        form = TaskForm(post_data, instance=task)
         if form.is_valid():
             form.save()
             return redirect('app_tasks:tasks_list')
+        else:
+            print(f'NOT VALID: {form.errors}')
     else:
         form = TaskForm(instance=task)
 
@@ -43,7 +48,18 @@ def task_view(request, task_slug):
 
 
 def task_create(reqeust):
+    form = TaskCreateForm
+
+    if reqeust.method == "POST":
+        form = TaskCreateForm(reqeust.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('app_tasks:tasks_list')
+        else:
+            print(form.errors)
+
     context = {
+        'form': form
     }
 
     return render(reqeust, 'tasks/task_form.html', context=context)
@@ -51,7 +67,7 @@ def task_create(reqeust):
 
 def task_delete(request, task_slug):
     task = Task.objects.get(slug=task_slug)
-    print(f'!!!{request.method}!!!')
+
     if request.method == "POST":
         task.delete()
         return redirect('app_tasks:tasks_list')

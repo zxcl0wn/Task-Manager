@@ -5,8 +5,8 @@ from .models import Project, ProjectMember
 class ProjectMemberInline(admin.TabularInline):
     model = ProjectMember
     extra = 1
-    raw_id_fields = ('user_id',)
-    fields = ('user_id', 'get_username', 'user_role')
+    raw_id_fields = ('user',)
+    fields = ('user', 'get_username', 'user_role')
     readonly_fields = ('get_username',)
 
     def get_username(self, obj):
@@ -23,8 +23,8 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(ProjectMember)
 class ProjectMemberAdmin(admin.ModelAdmin):
-    list_display = ('project_id', 'user_id', 'get_username', 'user_role')
-    list_select_related = ('user_id',)
+    list_display = ('project', 'user', 'get_username', 'user_role')
+    list_select_related = ('user',)
     list_filter = ('user_role',)
 
     def get_username(self, obj):
