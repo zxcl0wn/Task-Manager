@@ -43,10 +43,10 @@ class TaskCreateForm(ModelForm):
         }
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'task-title'}),
-            'description': forms.Textarea(attrs={'class': 'task-textarea'}),
-            'priority': forms.Select(attrs={'class': 'task-select'}),
-            'project': forms.Select(attrs={'class': 'task-select'}),
-            'comment': forms.Textarea(attrs={'class': 'task-textarea'}),
-            'deadline_date': forms.DateInput(attrs={'class': 'task-input', 'type': 'date'}),
+            'title': forms.TextInput(attrs={'class': 'taskedit-title'}),
+            'description': forms.Textarea(attrs={'class': 'taskedit-textarea'}),
+            'priority': forms.Select(attrs={'class': 'taskedit-select'}),
+            'project': forms.Select(attrs={'class': 'taskedit-select'}),
+            'comment': forms.Textarea(attrs={'class': 'taskedit-textarea'}),
+            'deadline_date': forms.DateInput(attrs={'class': 'taskedit-input', 'type': 'date'}),
         }

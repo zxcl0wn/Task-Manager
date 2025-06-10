@@ -2,20 +2,75 @@
 {% load static %}
 
 {% block content %}
-	<h1>Страница проекта: "{{ project }}"</h1>
-    <form method="post" action="">
-        {% csrf_token %}
-        {% for field in form %}
-            {{ field.label }}
-            {{ field }}
-        {% endfor %}
-        <button type="submit" class="save-btn">Сохранить</button>
-    </form>
+<div class="prform-card">
+    <div class="prform-form">
+        <!-- Левая колонка: задачи -->
+        <div class="prform-left">
+            {% for task in tasks %}
+                <button class="prform-task-btn">
+                    {{ task.title }} <span class="edit-symbol">✎</span>
+                </button>
+            {% endfor %}
+            <a href="{% url 'app_tasks:task_create' %}" class="prform-add-task">Добавить задачи</a>
+        </div>
 
-    <form method="POST" action="{% url 'app_projects:project_delete' project.slug %}">
-        {% csrf_token %}
-        <input type="submit" value="Удалить">
-{#        <a class="delete-btn" type="submit">Удалить</a>#}
-    </form>
+        <!-- Центр: название, описание, комментарий и СТАТУС -->
+        <div class="prform-center">
+            <form method="post">
+                {% csrf_token %}
 
+                <!-- Название проекта -->
+                <div class="prform-field">
+                    <label class="prform-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                    {{ form.title }}
+                </div>
+
+                <!-- Описание -->
+                <div class="prform-field">
+                    <label class="prform-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+                    {{ form.description }}
+                </div>
+
+                <!-- Комментарий -->
+                <div class="prform-field">
+                    <label class="prform-label" for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
+                    {{ form.comment }}
+                </div>
+
+                <!-- Статус (только отображение) -->
+                <div class="prform-status-badge">
+                    Статус проекта: {{ project.get_status_display }}
+                </div>
+
+                <button type="submit" class="save-btn">Сохранить</button>
+            </form>
+        </div>
+
+        <!-- Правая колонка: участники и действия -->
+        <div class="prform-right">
+            <div class="prform-field">
+                <p class="prform-label">Участники проекта:</p>
+                <ul class="prform-members">
+                    {% for user in project.users.all %}
+                        <li>👤 {{ user.username }}</li>
+                    {% empty %}
+                        <li>Нет участников</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <button class="prform-action-btn">Добавить участника</button>
+
+            <form method="POST" action="{% url 'app_projects:project_delete' project.slug %}">
+                {% csrf_token %}
+                <input type="submit" value="Удалить" class="del-btn">
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Кнопка вне карточки -->
+<div class="back-btn-container">
+    <a href="{% url 'app_projects:projects_list' %}" class="prform-back-btn">Вернуться обратно</a>
+</div>
 {% endblock %}

@@ -43,16 +43,15 @@
 
         </div>
     </form>
-    <form method="POST" action="{% url 'app_tasks:task_delete' task.slug %}">
+   <form method="POST" action="{% url 'app_tasks:task_delete' task.slug %}">
         {% csrf_token %}
-        <input type="submit" value="Удалить">
-{#        <a class="delete-btn" type="submit">Удалить</a>#}
+        <button type="submit" class="delete-btn">Удалить</button>
     </form>
+
 </div>
 
 <!-- Кнопка назад -->
 <div class="back-btn-container">
     <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn">Вернуться обратно</a>
 </div>
-{% endblock %}
-
+{% endblock %} 
