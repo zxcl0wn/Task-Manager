@@ -24,10 +24,17 @@ def project_view(request, project_slug):
     project = Project.objects.get(slug=project_slug)
 
     if request.method == "POST":
-        form = ProjectForm(request.POST, instance=project)
+        post_data = request.POST.copy()
+        post_data['status'] = project.status
+        post_data['users'] = list(map(str, project.users.all().values_list('id', flat=True)))[0]
+
+        # print(f'post_data 2: {post_data}')
+        form = ProjectForm(post_data, instance=project)
         if form.is_valid():
             form.save()
             return redirect('app_projects:projects_list')
+        else:
+            print(f'\n\n{form.errors}\n\n')
     else:
         form = ProjectForm(instance=project)
 
@@ -55,6 +62,7 @@ def create_project(request):
     }
 
     return render(request, 'projects/project_form.html', context=context)
+
 
 def project_delete(request, project_slug):
     project = Project.objects.get(slug=project_slug)
