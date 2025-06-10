@@ -11,7 +11,7 @@
                     {{ task.title }} <span class="edit-symbol">✎</span>
                 </button>
             {% endfor %}
-            <a href="{% url 'app_tasks:task_create' %}" class="prform-add-task">Добавить задачи</a>
+            <a href="{% url 'app_tasks:task_create' %}?project={{ project.slug }}" class="prform-add-task">Добавить задачи</a>
         </div>
 
         <!-- Центр: название, описание, комментарий и СТАТУС -->

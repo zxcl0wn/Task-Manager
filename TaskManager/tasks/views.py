@@ -1,4 +1,6 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+
+from projects.models import Project
 from .models import Task
 from .forms import TaskForm, TaskCreateForm
 
@@ -47,22 +49,30 @@ def task_view(request, task_slug):
     return render(request, 'tasks/task.html', context=context)
 
 
-def task_create(reqeust):
+def task_create(request):
+    project_slug = request.GET.get('project')
+    initial_data = {}
     form = TaskCreateForm
 
-    if reqeust.method == "POST":
-        form = TaskCreateForm(reqeust.POST)
+    if project_slug:
+        project = get_object_or_404(Project, slug=project_slug)
+        initial_data['project'] = project.pk
+
+    if request.method == "POST":
+        form = TaskCreateForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('app_tasks:tasks_list')
         else:
             print(form.errors)
+    else:
+        form = TaskCreateForm(initial=initial_data)
 
     context = {
         'form': form
     }
 
-    return render(reqeust, 'tasks/task_form.html', context=context)
+    return render(request, 'tasks/task_form.html', context=context)
 
 
 def task_delete(request, task_slug):
