@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import Project
-from .forms import ProjectForm
+from .forms import ProjectForm, ProjectCreateForm
 
 
 def main_page(request):
@@ -40,22 +40,21 @@ def project_view(request, project_slug):
 
 
 def create_project(request):
-    form = ProjectForm
-
     if request.method == "POST":
-        form = ProjectForm(request.POST)
+        form = ProjectCreateForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('app_projects:projects_list')
         else:
             print(form.errors)
+    else:
+        form = ProjectCreateForm()  # ← вот так создаём форму для GET-запроса
 
     context = {
         'form': form
     }
 
     return render(request, 'projects/project_form.html', context=context)
-
 
 def project_delete(request, project_slug):
     project = Project.objects.get(slug=project_slug)

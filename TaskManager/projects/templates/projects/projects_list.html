@@ -8,36 +8,40 @@
     <div class="projects-container" id="projectsContainer">
         {% for project in projects %}
         <div class="project-card">
-            <a href="{% url 'app_projects:project_view' project.slug %}"></a>
-            <p class="project-title"><strong>{{ project.title }}</strong></p>
-            <p class="project-description">{{ project.description }}</p>
+            <a href="{% url 'app_projects:project_view' project.slug %}">
 
-            <ul class="project-tasks">
-                {% for task in project.tasks.all %}
-                <li>{{ task.title }}</li>
-                {% endfor %}
-            </ul>
+                <p class="project-title"><strong>{{ project.title }}</strong></p>
+                <p class="project-description">{{ project.description }}</p>
 
-            <a href="#" class="project-btn">Добавить задачи</a>
+                <ul class="project-tasks">
+                    {% for task in project.tasks.all %}
+                    <li>{{ task.title }}</li>
+                    {% endfor %}
+                </ul>
 
-            <p class="project-meta">Статус проекта: {{ project.get_visibility_display }}</p>
-            
-            <span class="project-status {% if project.status == 'active' %}in-progress{% else %}completed{% endif %}">
-                {{ project.get_status_display }}
-            </span>
+                <a href="#" class="project-btn">Добавить задачи</a>
 
-            <a href="#" class="st-btn">{{ project.get_is_completed_display }}</a>
+                <p class="project-meta">Статус проекта: {{ project.get_visibility_display }}</p>
+
+                <span
+                    class="project-status {% if project.status == 'active' %}in-progress{% else %}completed{% endif %}">
+                    {{ project.get_status_display }}
+                </span>
+
+                <a href="#" class="st-btn">{{ project.get_is_completed_display }}</a>
+
+            </a>
         </div>
         {% endfor %}
 
-{#        <div class="project-card project-add">#}
-{#            <div class="project-add-btn">+</div>#}
-{#            <p class="project-add-text">Создать проект</p>#}
-{#        </div>#}
-            <a href="{% url 'app_projects:create_project' %}" class="project-card project-add">
-                <div class="project-add-btn">+</div>
-                <p class="project-add-text">Создать проект</p>
-            </a>
+        {# <div class="project-card project-add">#}
+            {# <div class="project-add-btn">+</div>#}
+            {# <p class="project-add-text">Создать проект</p>#}
+            {# </div>#}
+        <a href="{% url 'app_projects:create_project' %}" class="project-card project-add">
+            <div class="project-add-btn">+</div>
+            <p class="project-add-text">Создать проект</p>
+        </a>
     </div>
 
     <div class="projects-arrows">

@@ -2,12 +2,17 @@
 {% load static %}
 
 {% block content %}
-	<h1>Страница профиля</h1>
-    {# TODO: добавить кнопку для выхода пользователя из системы #}
-    <h2>Ваш никнейм: {{ user }}</h2>
-    <h2>Ваш адрес электронной почты: {{ user.email }}</h2>
-    <form method="post" action="{% url 'app_user:logout' %}">
+<section class="profile-section">
+    <h1 class="profile-title">Страница профиля</h1>
+
+    <div class="profile-info">
+        <p class="profile-field"><strong>Никнейм:</strong> {{ user }}</p>
+        <p class="profile-field"><strong>Email:</strong> {{ user.email }}</p>
+    </div>
+
+    <form method="post" action="{% url 'app_user:logout' %}" class="logout-form">
         {% csrf_token %}
-        <button type="submit">Выйти</button>
+        <button type="submit" class="logout-btn">Выйти</button>
     </form>
+</section>
 {% endblock %}
