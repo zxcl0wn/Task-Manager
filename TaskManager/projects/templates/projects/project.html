@@ -7,9 +7,10 @@
         <!-- Левая колонка: задачи -->
         <div class="prform-left">
             {% for task in tasks %}
-                <button class="prform-task-btn">
-                    {{ task.title }} <span class="edit-symbol">✎</span>
-                </button>
+                <a class="prform-task-btn" href="{% url 'app_tasks:task_view' task.slug %}"><button>{{ task.title }}</button></a><br>
+{#                <button class="prform-task-btn">#}
+{#                    {{ task.title }} <span class="edit-symbol">✎</span>#}
+{#                </button>#}
             {% endfor %}
             <a href="{% url 'app_tasks:task_create' %}?project={{ project.slug }}" class="prform-add-task">Добавить задачи</a>
         </div>
@@ -51,15 +52,18 @@
             <div class="prform-field">
                 <p class="prform-label">Участники проекта:</p>
                 <ul class="prform-members">
-                    {% for user in project.users.all %}
-                        <li>👤 {{ user.username }}</li>
+                    {% for member in members %}
+                        <li>👤 {{ member.user.username }}: {{ member.get_user_role_display }}</li>
                     {% empty %}
                         <li>Нет участников</li>
                     {% endfor %}
+
                 </ul>
             </div>
 
-            <button class="prform-action-btn">Добавить участника</button>
+            {% if project.status == "PUBLIC" %}
+                <button class="prform-action-btn">Добавить участника</button>
+            {% endif %}
 
             <form method="POST" action="{% url 'app_projects:project_delete' project.slug %}">
                 {% csrf_token %}
