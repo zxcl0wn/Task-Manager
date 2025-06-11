@@ -15,8 +15,7 @@ logger = logging.getLogger(__name__)
 import datetime
 
 
-def my_job():
-    logger.info("Выполняется задача my_job")
+def notification_cron():
     try:
         all_tasks = Task.objects.all()
         for task in all_tasks:
@@ -38,12 +37,11 @@ def my_job():
                         task=new_task,
                         is_read=new_is_read
                     )
-                    logger.info("Добавлено новое оповещение")
 
     except Exception as e:
         print(e)
     finally:
-        connection.close()  # Закрываем соединение
+        connection.close()
 
 
 @util.close_old_connections
@@ -59,18 +57,15 @@ class Command(BaseCommand):
         scheduler = BlockingScheduler(timezone=settings.TIME_ZONE)
         scheduler.add_jobstore(DjangoJobStore(), "default")
 
-        # Добавляем задачу my_job, которая будет выполняться каждую минуту
         scheduler.add_job(
-            my_job,
-            trigger=CronTrigger(second="*/10"),  # Каждую минуту
+            notification_cron,
+            trigger=CronTrigger(second="*/10"),  # Каждые 10 секунд
             id="my_job",
             max_instances=1,
             replace_existing=True,
             coalesce=True,
         )
-        logger.info("Добавлена задача 'my_job' с запуском каждую минуту")
 
-        # Добавляем задачу очистки старых записей (раз в неделю)
         scheduler.add_job(
             delete_old_job_executions,
             trigger=CronTrigger(day_of_week="mon", hour="00", minute="00"),
@@ -78,12 +73,8 @@ class Command(BaseCommand):
             max_instances=1,
             replace_existing=True,
         )
-        logger.info("Добавлена еженедельная задача очистки старых записей")
 
         try:
-            logger.info("Запуск планировщика задач...")
             scheduler.start()
         except KeyboardInterrupt:
-            logger.info("Остановка планировщика...")
             scheduler.shutdown()
-            logger.info("Планировщик успешно остановлен")
