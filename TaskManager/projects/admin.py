@@ -10,7 +10,7 @@ class ProjectMemberInline(admin.TabularInline):
     readonly_fields = ('get_username',)
 
     def get_username(self, obj):
-        return obj.user_id.username if obj.user_id else '-'
+        return obj.user.username if obj.user else '-'  # Используем obj.user вместо obj.user_id
 
     get_username.short_description = 'Username'
 
@@ -24,11 +24,11 @@ class ProjectAdmin(admin.ModelAdmin):
 @admin.register(ProjectMember)
 class ProjectMemberAdmin(admin.ModelAdmin):
     list_display = ('project', 'user', 'get_username', 'user_role')
-    list_select_related = ('user',)
+    list_select_related = ('user',)  # Раскомментируйте для оптимизации запросов
     list_filter = ('user_role',)
 
     def get_username(self, obj):
-        return obj.user_id.username
+        return obj.user.username  # Используем obj.user вместо obj.user_id
 
     get_username.short_description = 'Username'
-    get_username.admin_order_field = 'user_id__username'
+    get_username.admin_order_field = 'user__username'  # Исправлено на user__username
