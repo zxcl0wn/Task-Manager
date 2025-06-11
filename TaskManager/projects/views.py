@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Project
+from .models import Project, ProjectMember
 from .forms import ProjectForm, ProjectCreateForm
+from tasks.models import Task
 
 
 def main_page(request):
@@ -22,6 +23,8 @@ def projects_list(request):
 
 def project_view(request, project_slug):
     project = Project.objects.get(slug=project_slug)
+    project_tasks = Task.objects.filter(project=project.id)
+    members = ProjectMember.objects.filter(project=project).select_related('user')
 
     if request.method == "POST":
         post_data = request.POST.copy()
@@ -40,6 +43,8 @@ def project_view(request, project_slug):
 
     context = {
         'project': project,
+        'tasks': project_tasks,
+        'members': members,
         'form': form
     }
 
@@ -48,14 +53,14 @@ def project_view(request, project_slug):
 
 def create_project(request):
     if request.method == "POST":
-        form = ProjectCreateForm(request.POST)
+        form = ProjectCreateForm(request.POST, request=request)
         if form.is_valid():
             form.save()
             return redirect('app_projects:projects_list')
         else:
             print(form.errors)
     else:
-        form = ProjectCreateForm()  # ← вот так создаём форму для GET-запроса
+        form = ProjectCreateForm(request=request)
 
     context = {
         'form': form
