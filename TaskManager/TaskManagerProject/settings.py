@@ -28,7 +28,9 @@ INSTALLED_APPS = [
     'tasks.apps.TasksConfig',
     'user.apps.UserConfig',
     'notification.apps.NotificationConfig',
+    'django_apscheduler'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

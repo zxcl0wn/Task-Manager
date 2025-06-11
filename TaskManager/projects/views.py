@@ -1,5 +1,9 @@
+import datetime
+from time import strftime
+
 from django.shortcuts import render, redirect
 
+from notification.models import Notification
 from user.middleware import get_current_user
 from .models import Project, ProjectMember
 from .forms import ProjectForm, ProjectCreateForm
@@ -7,6 +11,11 @@ from tasks.models import Task
 
 
 def main_page(request):
+    try:
+        n1 = Notification.objects.get(task_id=33)
+        print(f'n1: {n1}')
+    except:
+        pass
     context = {
 
     }
