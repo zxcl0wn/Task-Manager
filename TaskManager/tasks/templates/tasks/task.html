@@ -3,20 +3,28 @@
 
 {% block content %}
 <div class="task-card">
+    <div class="subtasks">
+        {% for subtask in subtasks %}
+            <div class="subtask-btn">
+                {{ subtask }}
+                <span class="pencil-symbol">✎</span>
+                <form method="POST" action="{% url 'app_tasks:subtask_delete' subtask.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="trash-btn">🗑</button>
+                </form>
+            </div>
+        {% endfor %}
+        <form method="POST" action="{% url 'app_tasks:subtask_create' task.id %}">
+            {% csrf_token %}
+            <button type="submit" class="subtask-control-btn">Добавить подзадачи</button>
+        </form>
+    </div>
     <form method="post">
         {% csrf_token %}
         <div class="task-layout">
 
             <!-- Подзадачи -->
-            <div class="subtasks">
-                <button class="subtask-btn">
-                    Подзадача 1
-                    <span class="pencil-symbol">✎</span>
-                    <span class="trash-symbol">🗑</span>
-                </button>
 
-                <a class="subtask-control-btn">Добавить подзадачи</a>
-            </div>
 
             <!-- Описание и комментарий -->
             <div class="task-info">

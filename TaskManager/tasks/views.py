@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
 from projects.models import Project
-from .models import Task
+from .models import Task, Subtask
 from .forms import TaskForm, TaskCreateForm
 
 
@@ -27,6 +27,8 @@ def tasks_list(request):
 
 def task_view(request, task_slug):
     task = Task.objects.get(slug=task_slug)
+    subtasks = Subtask.objects.filter(task=task.id)
+
     if request.method == "POST":
         post_data = request.POST.copy()
         post_data['priority'] = task.priority
@@ -43,6 +45,7 @@ def task_view(request, task_slug):
 
     context = {
         'task': task,
+        'subtasks': subtasks,
         'form': form
     }
 
@@ -56,13 +59,15 @@ def task_create(request):
 
     if project_slug:
         project = get_object_or_404(Project, slug=project_slug)
-        initial_data['project'] = project.pk
+        initial_data['project'] = project.id
 
     if request.method == "POST":
         form = TaskCreateForm(request.POST)
+        project_slug = Project.objects.get(id=request.POST['project']).slug
+
         if form.is_valid():
             form.save()
-            return redirect('app_tasks:tasks_list')
+            return redirect('app_projects:project_view', project_slug=project_slug)
         else:
             print(form.errors)
     else:
@@ -80,4 +85,23 @@ def task_delete(request, task_slug):
 
     if request.method == "POST":
         task.delete()
-        return redirect('app_tasks:tasks_list')
+    return redirect('app_tasks:tasks_list')
+
+
+def subtask_delete(request, subtask_id):
+    subtask = Subtask.objects.get(id=subtask_id)
+    task = subtask.task
+
+    if request.method == "POST":
+        print(f'!!!')
+        subtask.delete()
+        return redirect('app_tasks:task_view', task_slug=task.slug)
+
+
+def subtask_create(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if request.method == "POST":
+        Subtask.objects.create(task=task, title="Новая подзадача")
+
+        return redirect('app_tasks:task_view', task_slug=task.slug)
