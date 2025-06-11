@@ -1,4 +1,6 @@
 from django.shortcuts import render, redirect
+
+from user.middleware import get_current_user
 from .models import Project, ProjectMember
 from .forms import ProjectForm, ProjectCreateForm
 from tasks.models import Task
@@ -53,14 +55,25 @@ def project_view(request, project_slug):
 
 def create_project(request):
     if request.method == "POST":
-        form = ProjectCreateForm(request.POST, request=request)
+        post_data = request.POST.copy()
+        current_user = get_current_user()
+        form = ProjectCreateForm(post_data)
+        print(f'!{form['users'].value()}')
         if form.is_valid():
-            form.save()
+            project = form.save(commit=False)
+            project.save()
+            form.save_m2m()
+
+            ProjectMember.objects.get_or_create(
+                project=project,
+                user=request.user,
+                defaults={'user_role': 'OWNER'}
+            )
             return redirect('app_projects:projects_list')
         else:
             print(form.errors)
     else:
-        form = ProjectCreateForm(request=request)
+        form = ProjectCreateForm()
 
     context = {
         'form': form
