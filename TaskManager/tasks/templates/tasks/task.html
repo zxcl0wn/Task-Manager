@@ -7,7 +7,12 @@
         {% for subtask in subtasks %}
             <div class="subtask-btn">
                 {{ subtask }}
-                <span class="pencil-symbol">✎</span>
+                <form method="GET" action="{% url 'app_tasks:subtask_change' subtask.id %}" style="display: inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="pencil-btn">✎</button>
+                </form>
+{#                <span class="pencil-symbol">✎</span>#}
+
                 <form method="POST" action="{% url 'app_tasks:subtask_delete' subtask.id %}" style="display: inline;">
                     {% csrf_token %}
                     <button type="submit" class="trash-btn">🗑</button>

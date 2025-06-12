@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 from projects.models import Project
 from .models import Task, Subtask
-from .forms import TaskForm, TaskCreateForm
+from .forms import TaskForm, TaskCreateForm, SubtaskChangeForm
 
 
 def tasks_list(request):
@@ -105,3 +105,21 @@ def subtask_create(request, task_id):
         Subtask.objects.create(task=task, title="Новая подзадача")
 
         return redirect('app_tasks:task_view', task_slug=task.slug)
+
+
+def subtask_change(request, subtask_id):
+    subtask = Subtask.objects.get(id=subtask_id)
+
+    if request.method == "POST":
+        form = SubtaskChangeForm(request.POST, instance=subtask)
+        if form.is_valid():
+            form.save()
+            return redirect('app_tasks:tasks_list')
+    else:
+        form = SubtaskChangeForm(instance=subtask)
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'tasks/subtask_change.html', context=context)
