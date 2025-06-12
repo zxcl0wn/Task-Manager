@@ -1,6 +1,8 @@
 import datetime
 from time import strftime
 
+from django.contrib.auth.models import User
+from django.db.models import Q
 from django.shortcuts import render, redirect
 
 from notification.models import Notification
@@ -11,11 +13,7 @@ from tasks.models import Task
 
 
 def main_page(request):
-    try:
-        n1 = Notification.objects.get(task_id=33)
-        print(f'n1: {n1}')
-    except:
-        pass
+
     context = {
 
     }

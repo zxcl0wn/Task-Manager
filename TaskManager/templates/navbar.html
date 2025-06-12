@@ -3,11 +3,20 @@
 <header class="navbar">
     <div class="navbar-logo">
         <a href="{% url 'app_notification:notifications' %}">
-            <img
+            {% if unread_notifications > 0 %}
+                <img
                 class="navbar-logo-img"
-                src="{% static 'projects/images/notif.jpg' %}"
+                    src="{% static 'notification/images/bell_dot.svg' %}"#}
                 alt="Logo"
             />
+            {% else %}
+                <img
+                class="navbar-logo-img"
+                    src="{% static 'notification/images/bell.svg' %}"#}
+                alt="Logo"
+            />
+            {% endif %} 
+
         </a>
         <a href="{% url 'app_projects:main' %}" class="navbar-title">
             <span>Task Manager</span>
