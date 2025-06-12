@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect
 from notification.models import Notification
 from user.middleware import get_current_user
 from .models import Project, ProjectMember
-from .forms import ProjectForm, ProjectCreateForm
+from .forms import ProjectForm, ProjectCreateForm, AddMembersForm
 from tasks.models import Task
 
 
@@ -65,7 +65,7 @@ def create_project(request):
         post_data = request.POST.copy()
         current_user = get_current_user()
         form = ProjectCreateForm(post_data)
-        print(f'!{form['users'].value()}')
+        # print(f'!{form['users'].value()}')
         if form.is_valid():
             project = form.save(commit=False)
             project.save()
@@ -73,7 +73,7 @@ def create_project(request):
 
             ProjectMember.objects.get_or_create(
                 project=project,
-                user=request.user,
+                user=current_user,
                 defaults={'user_role': 'OWNER'}
             )
             return redirect('app_projects:projects_list')
@@ -96,3 +96,26 @@ def project_delete(request, project_slug):
         project.delete()
 
         return redirect('app_projects:projects_list')
+
+
+def add_members(request, project_slug):
+    project = Project.objects.get(slug=project_slug)
+    if request.method == "POST":
+        form = AddMembersForm(request.POST, project=project)
+        user = User.objects.get(id=request.POST['user'])
+        user_role = request.POST['user_role']
+        # print(f'request.POST: {request.POST}')
+
+        ProjectMember.objects.create(
+            project=project,
+            user=user,
+            user_role=user_role
+        )
+        return redirect('app_projects:projects_list')
+    else:
+        form = AddMembersForm(project=project)
+    context = {
+        'form': form
+    }
+
+    return render(request, 'projects/add_members.html', context=context)

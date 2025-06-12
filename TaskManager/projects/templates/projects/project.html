@@ -62,7 +62,7 @@
             </div>
 
             {% if project.status == "PUBLIC" %}
-                <button class="prform-action-btn">Добавить участника</button>
+                <a class="prform-action-btn" href="{% url 'app_projects:add_members' project.slug %}">Добавить участника</a>
             {% endif %}
 
             <form method="POST" action="{% url 'app_projects:project_delete' project.slug %}">
