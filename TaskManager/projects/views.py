@@ -24,7 +24,15 @@ def main_page(request):
 
 @login_required(login_url='app_user:login')
 def projects_list(request):
-    projects = Project.objects.all()
+    all_projects = Project.objects.filter()
+    projects = []
+
+    for project in all_projects:
+        project_members = ProjectMember.objects.filter(project=project, user=get_current_user()).exists()
+        if project_members:
+            projects.append(project)
+            # print(f'Project: {project}\nProject members: {project_members}\n')
+
     context = {
         'projects': projects
     }
@@ -41,8 +49,12 @@ def project_view(request, project_slug):
     if request.method == "POST":
         post_data = request.POST.copy()
         post_data['status'] = project.status
-        post_data['users'] = list(map(str, project.users.all().values_list('id', flat=True)))[0]
+        # post_data['users'] = list(map(int, ProjectMember.objects.filter(project=project).values_list('user', flat=True)))
+        post_data.setlist('users', ProjectMember.objects.filter(
+            project=project
+        ).values_list('user', flat=True))
 
+        print(f'post data users: {post_data}')
         # print(f'post_data 2: {post_data}')
         form = ProjectForm(post_data, instance=project)
         if form.is_valid():
