@@ -1,4 +1,6 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.db.models import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 
@@ -44,6 +46,9 @@ def tasks_list(request):
 def task_view(request, task_slug):
     task = Task.objects.get(slug=task_slug)
     subtasks = Subtask.objects.filter(task=task.id)
+    project_members = User.objects.filter(id__in=ProjectMember.objects.filter(project=(Project.objects.get(task=task))).values_list('user', flat=True))
+    if get_current_user() not in project_members:
+        raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":
         post_data = request.POST.copy()
@@ -70,6 +75,10 @@ def task_view(request, task_slug):
 
 @login_required(login_url='app_user:login')
 def task_create(request):
+    is_all_user_projects_exists = Project.objects.filter(users=get_current_user()).exists()
+    if not is_all_user_projects_exists:
+        return redirect('app_projects:projects_list')
+
     project_slug = request.GET.get('project')
     initial_data = {}
 
@@ -99,6 +108,12 @@ def task_create(request):
 @login_required(login_url='app_user:login')
 def task_delete(request, task_slug):
     task = Task.objects.get(slug=task_slug)
+
+    project_members = User.objects.filter(
+        id__in=ProjectMember.objects.filter(project=(Project.objects.get(task=task))).values_list('user', flat=True))
+
+    if get_current_user() not in project_members:
+        raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":
         task.delete()

@@ -3,6 +3,7 @@ from time import strftime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
@@ -45,6 +46,9 @@ def project_view(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     project_tasks = Task.objects.filter(project=project.id)
     members = ProjectMember.objects.filter(project=project).select_related('user')
+
+    if get_current_user() not in User.objects.filter(id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True)):
+        raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":
         post_data = request.POST.copy()
@@ -108,6 +112,10 @@ def create_project(request):
 @login_required(login_url='app_user:login')
 def project_delete(request, project_slug):
     project = Project.objects.get(slug=project_slug)
+    members = User.objects.filter(id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True))
+    # print(f'members: {members}')
+    if get_current_user() not in members:
+        raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":
         project.delete()
@@ -118,6 +126,13 @@ def project_delete(request, project_slug):
 @login_required(login_url='app_user:login')
 def add_members(request, project_slug):
     project = Project.objects.get(slug=project_slug)
+    members = User.objects.filter(id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True))
+    if get_current_user() not in members:
+        raise PermissionDenied("У вас нет доступа к этой задаче")
+
+    if project.status == "PRIVATE":
+        raise PermissionDenied("У вас нет доступа к этой задаче")
+
     if request.method == "POST":
         form = AddMembersForm(request.POST, project=project)
         user = User.objects.get(id=request.POST['user'])
