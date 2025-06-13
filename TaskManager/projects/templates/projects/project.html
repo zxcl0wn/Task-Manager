@@ -13,39 +13,56 @@
                 </a><br>
             {% endfor %}
 
+        {% if user_status == "OWNER" %}
             <!-- Кнопка добавления задачи -->
-            <a href="{% url 'app_tasks:task_create' %}?project={{ project.slug }}" class="prform-add-task">Добавить задачи</a>
+            <a href="{% url 'app_tasks:task_create' %}?project={{ project.slug }}" class="prform-add-task">Добавить задачу</a>
+        {% endif %}
+
         </div>
 
         <!-- Центр: название, описание, комментарий и СТАТУС -->
         <div class="prform-center">
             <form method="post">
                 {% csrf_token %}
-
                 <!-- Название проекта -->
                 <div class="prform-field">
                     <label class="prform-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
-                    {{ form.title }}
+                    {% if user_status != "VIEWER" %}
+                    	{{ form.title }}
+                    {% else %}
+                        <div class="prform-input">{{ project.title }}</div>
+                    {% endif %}
+
                 </div>
 
                 <!-- Описание -->
                 <div class="prform-field">
                     <label class="prform-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
-                    {{ form.description }}
+                    {% if user_status != "VIEWER" %}
+                        {{ form.description }}
+                    {% else %}
+                        <div class="prform-textarea">{{ project.description }}</div>
+                    {% endif %}
                 </div>
 
                 <!-- Комментарий -->
                 <div class="prform-field">
                     <label class="prform-label" for="{{ form.comment.id_for_label }}">{{ form.comment.label }}</label>
-                    {{ form.comment }}
+                    {% if user_status != "VIEWER" %}
+                        {{ form.comment }}
+                    {% else %}
+                        <div class="prform-textarea">{{ project.comment }}</div>
+                    {% endif %}
                 </div>
 
                 <!-- Статус (только отображение) -->
                 <div class="prform-status-badge">
                     Статус проекта: {{ project.get_status_display }}
                 </div>
+                {% if user_status != "VIEWER" %}
+                	<button type="submit" class="save-btn">Сохранить</button>
+                {% endif %}
 
-                <button type="submit" class="save-btn">Сохранить</button>
             </form>
         </div>
 
@@ -61,15 +78,19 @@
                     {% endfor %}
                 </ul>
             </div>
-
-            {% if project.status == "PUBLIC" %}
-                <a class="prform-action-btn" href="{% url 'app_projects:add_members' project.slug %}">Добавить участника</a>
+            {% if user_status == "OWNER" %}
+            	{% if project.status == "PUBLIC" %}
+                    <a class="prform-action-btn" href="{% url 'app_projects:add_members' project.slug %}">Добавить участника</a>
+                {% endif %}
             {% endif %}
 
-            <form method="POST" action="{% url 'app_projects:project_delete' project.slug %}">
+        {% if user_status == "OWNER" %}
+        	<form method="POST" action="{% url 'app_projects:project_delete' project.slug %}">
                 {% csrf_token %}
                 <input type="submit" value="Удалить" class="del-btn">
             </form>
+        {% endif %}
+
         </div>
     </div>
 </div>

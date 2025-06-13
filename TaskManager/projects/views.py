@@ -1,6 +1,6 @@
 import datetime
 from time import strftime
-
+from .utils import get_user_role
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
@@ -46,6 +46,7 @@ def project_view(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     project_tasks = Task.objects.filter(project=project.id)
     members = ProjectMember.objects.filter(project=project).select_related('user')
+    user_status = get_user_role(project)
 
     if get_current_user() not in User.objects.filter(id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True)):
         raise PermissionDenied("У вас нет доступа к этой задаче")
@@ -53,13 +54,11 @@ def project_view(request, project_slug):
     if request.method == "POST":
         post_data = request.POST.copy()
         post_data['status'] = project.status
-        # post_data['users'] = list(map(int, ProjectMember.objects.filter(project=project).values_list('user', flat=True)))
         post_data.setlist('users', ProjectMember.objects.filter(
             project=project
         ).values_list('user', flat=True))
 
         print(f'post data users: {post_data}')
-        # print(f'post_data 2: {post_data}')
         form = ProjectForm(post_data, instance=project)
         if form.is_valid():
             form.save()
@@ -73,7 +72,8 @@ def project_view(request, project_slug):
         'project': project,
         'tasks': project_tasks,
         'members': members,
-        'form': form
+        'form': form,
+        'user_status': user_status
     }
 
     return render(request, 'projects/project.html', context=context)
@@ -113,8 +113,8 @@ def create_project(request):
 def project_delete(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     members = User.objects.filter(id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True))
-    # print(f'members: {members}')
-    if get_current_user() not in members:
+    user_role = get_user_role(project)
+    if (get_current_user() not in members) or (user_role != "OWNER"):
         raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":
@@ -127,10 +127,9 @@ def project_delete(request, project_slug):
 def add_members(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     members = User.objects.filter(id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True))
-    if get_current_user() not in members:
-        raise PermissionDenied("У вас нет доступа к этой задаче")
+    user_role = get_user_role(project)
 
-    if project.status == "PRIVATE":
+    if (get_current_user() not in members) or (project.status == "PRIVATE") or (user_role != "OWNER"):
         raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":

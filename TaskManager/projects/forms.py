@@ -46,19 +46,6 @@ class ProjectCreateForm(ModelForm):
             # 'users': forms.SelectMultiple(attrs={'class': 'projform-select'}),
         }
 
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     current_user = get_current_user()
-    #     users = self.fields['users'].queryset
-    #     print(f'current_user: {current_user}')
-    #     for user in users:
-    #         if str(user.username) == str(current_user):
-    #             self.fields['users'].queryset = self.fields['users'].queryset.exclude(id=current_user.id)
-
-    # def cleaned_users(self):
-    #     data = self.cleaned_data['users']
-    #     return data
-
 
 class AddMembersForm(ModelForm):
     class Meta:
@@ -76,34 +63,6 @@ class AddMembersForm(ModelForm):
             project=self.project
         ).values_list('user_id', flat=True)
 
-        # Фильтруем queryset пользователей, исключая уже добавленных
         self.fields['user'].queryset = User.objects.exclude(
             id__in=existing_member_ids
         )
-
-# User = get_user_model()
-
-
-# class AddMembersForm(forms.ModelForm):
-#     email = forms.EmailField(label="Email пользователя")
-#
-#     class Meta:
-#         model = ProjectMember
-#         fields = ['user_role']
-#         widgets = {
-#             'user_role': forms.Select(attrs={'class': 'form-select'})
-#         }
-#
-#     def __init__(self, *args, **kwargs):
-#         self.project = kwargs.pop('project', None)
-#         super().__init__(*args, **kwargs)
-#
-#     def clean_email(self):
-#         email = self.cleaned_data['email']
-#         try:
-#             user = get_user_model().objects.get(email=email)
-#             if ProjectMember.objects.filter(project=self.project, user=user).exists():
-#                 raise forms.ValidationError("Этот пользователь уже в проекте")
-#             return user
-#         except get_user_model().DoesNotExist:
-#             raise forms.ValidationError("Пользователь с таким email не найден")

@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.db.models import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
-
+from projects.utils import get_user_role
 from projects.models import Project, ProjectMember
 from user.middleware import get_current_user
 from .models import Task, Subtask
@@ -46,6 +46,8 @@ def tasks_list(request):
 def task_view(request, task_slug):
     task = Task.objects.get(slug=task_slug)
     subtasks = Subtask.objects.filter(task=task.id)
+    user_status = get_user_role(task.project)
+    # print(f'user_status: {user_status}')
     project_members = User.objects.filter(id__in=ProjectMember.objects.filter(project=(Project.objects.get(task=task))).values_list('user', flat=True))
     if get_current_user() not in project_members:
         raise PermissionDenied("У вас нет доступа к этой задаче")
@@ -67,7 +69,8 @@ def task_view(request, task_slug):
     context = {
         'task': task,
         'subtasks': subtasks,
-        'form': form
+        'form': form,
+        'user_status': user_status,
     }
 
     return render(request, 'tasks/task.html', context=context)
@@ -81,6 +84,10 @@ def task_create(request):
 
     project_slug = request.GET.get('project')
     initial_data = {}
+    if project_slug:
+        user_role = get_user_role(project=Project.objects.get(slug=project_slug))
+        if user_role != "OWNER":
+            raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if project_slug:
         project = get_object_or_404(Project, slug=project_slug)
@@ -108,11 +115,12 @@ def task_create(request):
 @login_required(login_url='app_user:login')
 def task_delete(request, task_slug):
     task = Task.objects.get(slug=task_slug)
+    user_role = get_user_role(project=task.project)
 
     project_members = User.objects.filter(
         id__in=ProjectMember.objects.filter(project=(Project.objects.get(task=task))).values_list('user', flat=True))
 
-    if get_current_user() not in project_members:
+    if (user_role != "OWNER") or (get_current_user() not in project_members):
         raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":
@@ -125,10 +133,12 @@ def subtask_delete(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
     task = subtask.task
     project = task.project
+    user_role = get_user_role(project=project)
+
     project_members = User.objects.filter(
         id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True))
 
-    if get_current_user() not in project_members:
+    if (get_current_user() not in project_members) or (user_role != "OWNER"):
         raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":
@@ -140,6 +150,9 @@ def subtask_delete(request, subtask_id):
 @login_required(login_url='app_user:login')
 def subtask_create(request, task_id):
     task = get_object_or_404(Task, id=task_id)
+    user_role = get_user_role(project=task.project)
+    if user_role != "OWNER":
+        raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":
         Subtask.objects.create(task=task, title="Новая подзадача")
@@ -150,18 +163,19 @@ def subtask_create(request, task_id):
 @login_required(login_url='app_user:login')
 def subtask_change(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
-
     project = subtask.task.project
+    user_role = get_user_role(project=project)
     project_members = User.objects.filter(
         id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True))
 
-    if get_current_user() not in project_members:
+    if (get_current_user() not in project_members) or (user_role == "VIEWER"):
         raise PermissionDenied("У вас нет доступа к этой задаче")
+
     if request.method == "POST":
         form = SubtaskChangeForm(request.POST, instance=subtask)
         if form.is_valid():
             form.save()
-            return redirect('app_tasks:tasks_list')
+            return redirect('app_tasks:task_view', task_slug=subtask.task.slug)
     else:
         form = SubtaskChangeForm(instance=subtask)
 

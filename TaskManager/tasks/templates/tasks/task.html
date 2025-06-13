@@ -6,24 +6,44 @@
             {% csrf_token %}
             <!-- Описание и комментарий -->
             <div class="task-info">
-                {{ form.title }}
+                {% if user_status == "VIEWER" %}
+                    <div class="task-title">{{ task.title }}</div>
+                {% else %}
+                    {{ form.title }}
+                {% endif %}
 
                 <label for="{{ form.description.id_for_label }}"
                     >{{ form.description.label }}</label
                 >
-                {{ form.description }}
+                {% if user_status == "VIEWER" %}
+                	<div class="task-textarea">{{ task.description }}</div>
+                {% else %}
+                    {{ form.description }}
+                {% endif %} 
+
 
                 <label for="{{ form.comment.id_for_label }}"
                     >{{ form.comment.label }}</label
                 >
-                {{ form.comment }}
+                {% if user_status == "VIEWER" %}
+                	<div class="task-textarea">{{ task.comment }}</div>
+                {% else %}
+                    {{ form.comment }}
+                {% endif %}
 
                 <label for="{{ form.status.id_for_label }}"
                     >{{ form.status.label }}</label
                 >
-                {{ form.status }}
+                {% if user_status == "VIEWER" %}
+                	<div class="status-btn">{{ task.get_status_display }}</div>
+                {% else %}
+                    {{ form.status }}
+                {% endif %}
 
-                <button type="submit" class="save-btn">Сохранить</button>
+                {% if user_status != "VIEWER" %}
+                    <button type="submit" class="save-btn">Сохранить</button>
+                {% endif %}
+
             </div>
         </form>
         <!-- Срок и приоритет -->
@@ -35,42 +55,51 @@
                 {% for subtask in subtasks %}
                 <div class="subtask-btn">
                     {{ subtask }}
-                    <form
-                        method="GET"
-                        action="{% url 'app_tasks:subtask_change' subtask.id %}"
-                        style="display: inline"
-                    >
+                    {% if user_status != "VIEWER" %}
+                    	<form
+                            method="GET"
+                            action="{% url 'app_tasks:subtask_change' subtask.id %}"
+                            style="display: inline"
+                        >
                         {% csrf_token %}
                         <button type="submit" class="pencil-btn">✎</button>
-                    </form>
-                    <form
-                        method="POST"
-                        action="{% url 'app_tasks:subtask_delete' subtask.id %}"
-                        style="display: inline"
-                    >
+                        </form>
+                    {% endif %}
+                    {% if user_status == "OWNER" %}
+                        <form
+                            method="POST"
+                            action="{% url 'app_tasks:subtask_delete' subtask.id %}"
+                            style="display: inline"
+                        >
                         {% csrf_token %}
                         <button type="submit" class="trash-btn">🗑</button>
-                    </form>
+                        </form>
+                    {% endif %}
                 </div>
                 {% endfor %}
             </div>
-            <form
-                method="POST"
-                action="{% url 'app_tasks:subtask_create' task.id %}"
-            >
+
+            {% if user_status == "OWNER" %}
+                <form
+                    method="POST"
+                    action="{% url 'app_tasks:subtask_create' task.id %}"
+                >
                 {% csrf_token %}
                 <button type="submit" class="subtask-control-btn">
                     Добавить подзадачи
                 </button>
             </form>
+            {% endif %}
         </div>
     </div>
+    {% if user_status == "OWNER" %}
+        <!-- Удалить -->
+        <form method="POST" action="{% url 'app_tasks:task_delete' task.slug %}">
+            {% csrf_token %}
+            <button type="submit" class="delete-btn">Удалить</button>
+        </form>
+    {% endif %} 
 
-    <!-- Удалить -->
-    <form method="POST" action="{% url 'app_tasks:task_delete' task.slug %}">
-        {% csrf_token %}
-        <button type="submit" class="delete-btn">Удалить</button>
-    </form>
 </div>
 
 <div class="back-btn-container">

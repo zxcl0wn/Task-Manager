@@ -1,5 +1,8 @@
 from django import forms
 from django.forms import ModelForm
+
+from projects.models import Project, ProjectMember
+from user.middleware import get_current_user
 from .models import Task, Subtask
 from django.contrib.auth.forms import UserCreationForm
 
@@ -50,6 +53,25 @@ class TaskCreateForm(ModelForm):
             'comment': forms.Textarea(attrs={'class': 'taskedit-textarea'}),
             'deadline_date': forms.DateInput(attrs={'class': 'taskedit-input', 'type': 'date'}),
         }
+
+    def __init__(self, *args, **kwargs):
+        self.user = get_current_user()
+        super().__init__()
+
+        if self.user:
+            self.fields['project'].queryset = Project.objects.filter(
+                projectmember__user=self.user,
+                projectmember__user_role='OWNER'
+            ).distinct()
+
+            if 'project' in self.initial:
+                project_id = self.initial['project']
+                if not ProjectMember.objects.filter(
+                        project_id=project_id,
+                        user=self.user,
+                        user_role='OWNER'
+                ).exists():
+                    self.initial.pop('project')
 
 
 class SubtaskChangeForm(ModelForm):
