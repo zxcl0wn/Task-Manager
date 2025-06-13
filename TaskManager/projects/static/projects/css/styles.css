@@ -793,24 +793,26 @@ h2 {
 }
 
 .taskm-card {
-    border: 1px solid #f44336;
+    border: 1px solid #f44336;    
     border-radius: 10px;
-    width: 250px;
-    min-height: 300px;
-    padding: 50px;
+    width: 300px;
+    min-height: 420px;
+    padding: 40px 35px 50px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;      
     text-decoration: none;
     color: inherit;
     transition: box-shadow 0.2s ease;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 }
+
 
 .taskm-card:hover {
     box-shadow: 0 0 10px rgba(244, 67, 54, 0.3);
 }
 
-.taskm-content {
+.taskm-content {           
+    width: 100%;
     text-align: center;
 }
 
@@ -910,14 +912,33 @@ h2 {
 }
 
 .taskm-filters {
-    margin-top: 30px;
-    text-align: center;
+    margin-top: 20px;
+    max-width: 560px;          
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 12px 50px;            
+    text-align: left;         
+    margin-left: auto;
+    margin-right: auto;
 }
+
 .taskm-filters h3 {
+    grid-column: 1 / -1;       
     margin-bottom: 10px;
+    font-weight: 600;
 }
+
 .taskm-filters label {
-    margin: 0 15px;
+    font-size: 16px;
+    color: #52575c;                      
+    display: flex;
+    align-items: center;
+    gap: 8px;                  
+    cursor: pointer;
+}
+
+.taskm-filters input[type="radio"] {
+    accent-color: #f44336;     
 }
 
 /* БЛОК ПРОЕКТА ЛИСТА */
@@ -1440,6 +1461,50 @@ h2 {
 .save-btn:hover {
     background-color: #d32f2f;
 }
+/* Страница редактирования подзадачи */
+.subtask-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.subtask-form label {
+    font-size: 18px;
+    margin-bottom: 8px;
+    font-weight: 500;
+    align-self: flex-start;
+}
+
+.subtask-form input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.save-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 12px 28px;
+    font-size: 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(244, 67, 54, 0.3);
+    transition: background-color 0.3s ease;
+}
+
+.save-btn:hover {
+    background-color: #d32f2f;
+}
+
 
 /*БЛОК ПРОФИЛЯ */
 .profile-section {
@@ -1902,3 +1967,14 @@ h2 {
     text-align: center;
   }
 }
+@media screen and (max-width: 600px) {
+    .subtask-form {
+        padding: 20px;
+    }
+
+    .save-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
