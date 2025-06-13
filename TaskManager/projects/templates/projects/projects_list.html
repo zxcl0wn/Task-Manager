@@ -19,8 +19,8 @@
                     {% endfor %}
                 </ul>
 
-                <a href="#" class="project-btn">Добавить задачи</a>
-
+{#                <a href="#" class="project-btn">Добавить задачи</a>#}
+                <a href="{% url 'app_tasks:task_create' %}?project={{ project.slug }}" class="project-btn">Добавить задачи</a>
                 <p class="project-meta">Статус проекта: {{ project.get_visibility_display }}</p>
 
                 <span

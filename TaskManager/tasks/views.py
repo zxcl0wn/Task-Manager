@@ -1,12 +1,27 @@
+from django.contrib.auth.decorators import login_required
+from django.db.models import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 
-from projects.models import Project
+from projects.models import Project, ProjectMember
+from user.middleware import get_current_user
 from .models import Task, Subtask
 from .forms import TaskForm, TaskCreateForm, SubtaskChangeForm
 
 
+@login_required(login_url='app_user:login')
 def tasks_list(request):
-    tasks = Task.objects.all()
+    all_tasks = Task.objects.all()
+    tasks_list = []
+
+    for task in all_tasks:
+        project_by_task = Project.objects.get(task=task)
+        project_by_task_members = ProjectMember.objects.filter(project=project_by_task, user=get_current_user()).exists()
+
+        if project_by_task_members:
+            tasks_list.append(task)
+
+    tasks = Task.objects.filter(title__in=tasks_list)
+    print(f'tasks!!!: {tasks}')
     filter_type = request.GET.get('filter')
 
     if filter_type == 'priority':
@@ -25,6 +40,7 @@ def tasks_list(request):
     return render(request, 'tasks/tasks_list.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def task_view(request, task_slug):
     task = Task.objects.get(slug=task_slug)
     subtasks = Subtask.objects.filter(task=task.id)
@@ -52,10 +68,10 @@ def task_view(request, task_slug):
     return render(request, 'tasks/task.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def task_create(request):
     project_slug = request.GET.get('project')
     initial_data = {}
-    form = TaskCreateForm
 
     if project_slug:
         project = get_object_or_404(Project, slug=project_slug)
@@ -80,6 +96,7 @@ def task_create(request):
     return render(request, 'tasks/task_form.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def task_delete(request, task_slug):
     task = Task.objects.get(slug=task_slug)
 
@@ -88,6 +105,7 @@ def task_delete(request, task_slug):
     return redirect('app_tasks:tasks_list')
 
 
+@login_required(login_url='app_user:login')
 def subtask_delete(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
     task = subtask.task
@@ -98,6 +116,7 @@ def subtask_delete(request, subtask_id):
         return redirect('app_tasks:task_view', task_slug=task.slug)
 
 
+@login_required(login_url='app_user:login')
 def subtask_create(request, task_id):
     task = get_object_or_404(Task, id=task_id)
 
@@ -107,6 +126,7 @@ def subtask_create(request, task_id):
         return redirect('app_tasks:task_view', task_slug=task.slug)
 
 
+@login_required(login_url='app_user:login')
 def subtask_change(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
 

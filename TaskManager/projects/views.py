@@ -1,6 +1,7 @@
 import datetime
 from time import strftime
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -21,8 +22,17 @@ def main_page(request):
     return render(request, 'projects/main.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def projects_list(request):
-    projects = Project.objects.all()
+    all_projects = Project.objects.filter()
+    projects = []
+
+    for project in all_projects:
+        project_members = ProjectMember.objects.filter(project=project, user=get_current_user()).exists()
+        if project_members:
+            projects.append(project)
+            # print(f'Project: {project}\nProject members: {project_members}\n')
+
     context = {
         'projects': projects
     }
@@ -30,6 +40,7 @@ def projects_list(request):
     return render(request, 'projects/projects_list.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def project_view(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     project_tasks = Task.objects.filter(project=project.id)
@@ -38,8 +49,12 @@ def project_view(request, project_slug):
     if request.method == "POST":
         post_data = request.POST.copy()
         post_data['status'] = project.status
-        post_data['users'] = list(map(str, project.users.all().values_list('id', flat=True)))[0]
+        # post_data['users'] = list(map(int, ProjectMember.objects.filter(project=project).values_list('user', flat=True)))
+        post_data.setlist('users', ProjectMember.objects.filter(
+            project=project
+        ).values_list('user', flat=True))
 
+        print(f'post data users: {post_data}')
         # print(f'post_data 2: {post_data}')
         form = ProjectForm(post_data, instance=project)
         if form.is_valid():
@@ -60,6 +75,7 @@ def project_view(request, project_slug):
     return render(request, 'projects/project.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def create_project(request):
     if request.method == "POST":
         post_data = request.POST.copy()
@@ -89,6 +105,7 @@ def create_project(request):
     return render(request, 'projects/project_form.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def project_delete(request, project_slug):
     project = Project.objects.get(slug=project_slug)
 
@@ -98,20 +115,20 @@ def project_delete(request, project_slug):
         return redirect('app_projects:projects_list')
 
 
+@login_required(login_url='app_user:login')
 def add_members(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     if request.method == "POST":
         form = AddMembersForm(request.POST, project=project)
         user = User.objects.get(id=request.POST['user'])
         user_role = request.POST['user_role']
-        # print(f'request.POST: {request.POST}')
 
         ProjectMember.objects.create(
             project=project,
             user=user,
             user_role=user_role
         )
-        return redirect('app_projects:projects_list')
+        return redirect('app_projects:project_view', project_slug=project.slug)
     else:
         form = AddMembersForm(project=project)
     context = {

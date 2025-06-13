@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render
 
@@ -5,6 +6,7 @@ from user.middleware import get_current_user
 from .models import Notification
 
 
+@login_required(login_url='app_user:login')
 def notifications_list(request):
     notifications = Notification.objects.filter(
         Q(user=get_current_user()) &

@@ -1,25 +1,28 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import UserForm
 
 
 def login_user(request):
-    # form = UserForm
-    if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
+    if request.user.is_authenticated:
+        return redirect('app_user:profile')
+    else:
+        if request.method == "POST":
+            username = request.POST['username']
+            password = request.POST['password']
 
-        try:
-            user = User.objects.get(username=username, password=password)
-        except:
-            print('Такого пользователя нет в системе')
+            try:
+                user = User.objects.get(username=username, password=password)
+            except:
+                print('Такого пользователя нет в системе')
 
-        user = authenticate(request, username=username, password=password)
+            user = authenticate(request, username=username, password=password)
 
-        if user is not None:
-            login(request, user)
-            return redirect('app_user:profile')
+            if user is not None:
+                login(request, user)
+                return redirect('app_user:profile')
 
     context = {
         # 'form': form,
@@ -30,16 +33,19 @@ def login_user(request):
 
 
 def register_user(request):
-    form = UserForm
+    if request.user.is_authenticated:
+        return redirect('app_user:profile')
+    else:
+        form = UserForm
 
-    if request.method == "POST":
-        form = UserForm(request.POST)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.save()
+        if request.method == "POST":
+            form = UserForm(request.POST)
+            if form.is_valid():
+                user = form.save(commit=False)
+                user.save()
 
-            login(request, user)
-            return redirect('app_user:profile')
+                login(request, user)
+                return redirect('app_user:profile')
 
 
     context = {
@@ -49,6 +55,7 @@ def register_user(request):
     return render(request, 'user/login_register.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def profile_user(request):
     user = request.user
     context = {
