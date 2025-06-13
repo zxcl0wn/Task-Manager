@@ -1,14 +1,27 @@
 from django.contrib.auth.decorators import login_required
+from django.db.models import QuerySet
 from django.shortcuts import render, redirect, get_object_or_404
 
-from projects.models import Project
+from projects.models import Project, ProjectMember
+from user.middleware import get_current_user
 from .models import Task, Subtask
 from .forms import TaskForm, TaskCreateForm, SubtaskChangeForm
 
 
 @login_required(login_url='app_user:login')
 def tasks_list(request):
-    tasks = Task.objects.all()
+    all_tasks = Task.objects.all()
+    tasks_list = []
+
+    for task in all_tasks:
+        project_by_task = Project.objects.get(task=task)
+        project_by_task_members = ProjectMember.objects.filter(project=project_by_task, user=get_current_user()).exists()
+
+        if project_by_task_members:
+            tasks_list.append(task)
+
+    tasks = Task.objects.filter(title__in=tasks_list)
+    print(f'tasks!!!: {tasks}')
     filter_type = request.GET.get('filter')
 
     if filter_type == 'priority':
