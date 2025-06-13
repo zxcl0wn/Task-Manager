@@ -3,33 +3,9 @@
 
 {% block content %}
 <div class="task-card">
-    <div class="subtasks">
-        {% for subtask in subtasks %}
-            <div class="subtask-btn">
-                {{ subtask }}
-                <form method="GET" action="{% url 'app_tasks:subtask_change' subtask.id %}" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="pencil-btn">✎</button>
-                </form>
-{#                <span class="pencil-symbol">✎</span>#}
-
-                <form method="POST" action="{% url 'app_tasks:subtask_delete' subtask.id %}" style="display: inline;">
-                    {% csrf_token %}
-                    <button type="submit" class="trash-btn">🗑</button>
-                </form>
-            </div>
-        {% endfor %}
-        <form method="POST" action="{% url 'app_tasks:subtask_create' task.id %}">
-            {% csrf_token %}
-            <button type="submit" class="subtask-control-btn">Добавить подзадачи</button>
-        </form>
-    </div>
     <form method="post">
         {% csrf_token %}
         <div class="task-layout">
-
-            <!-- Подзадачи -->
-
 
             <!-- Описание и комментарий -->
             <div class="task-info">
@@ -47,24 +23,44 @@
                 <button type="submit" class="save-btn">Сохранить</button>
             </div>
 
-            <!-- Срок и приоритет (без формы) -->
+            <!-- Срок и приоритет -->
             <div class="task-meta">
                 <p>Срок сдачи: {{ task.deadline_date }}</p>
                 <p>Приоритет: {{ task.get_priority_display }}</p>
                 <p>Проект: {{ task.project }}</p>
-            </div>
+                   <div class="subtasks">
+                    {% for subtask in subtasks %}
+                        <div class="subtask-btn">
+                            {{ subtask }}
+                            <form method="GET" action="{% url 'app_tasks:subtask_change' subtask.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="pencil-btn">✎</button>
+                            </form>
+                            <form method="POST" action="{% url 'app_tasks:subtask_delete' subtask.id %}" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="trash-btn">🗑</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                    <form method="POST" action="{% url 'app_tasks:subtask_create' task.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="subtask-control-btn">Добавить подзадачи</button>
+                    </form>
+                </div>
 
+            </div>
         </div>
     </form>
-   <form method="POST" action="{% url 'app_tasks:task_delete' task.slug %}">
+
+ 
+    <!-- Удалить -->
+    <form method="POST" action="{% url 'app_tasks:task_delete' task.slug %}">
         {% csrf_token %}
         <button type="submit" class="delete-btn">Удалить</button>
     </form>
-
 </div>
 
-<!-- Кнопка назад -->
 <div class="back-btn-container">
     <a href="{% url 'app_tasks:tasks_list' %}" class="back-btn">Вернуться обратно</a>
 </div>
-{% endblock %} 
+{% endblock %}
