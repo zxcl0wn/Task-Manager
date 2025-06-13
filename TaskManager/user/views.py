@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import UserForm
@@ -49,6 +50,7 @@ def register_user(request):
     return render(request, 'user/login_register.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def profile_user(request):
     user = request.user
     context = {

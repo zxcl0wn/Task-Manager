@@ -1,6 +1,7 @@
 import datetime
 from time import strftime
 
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -21,6 +22,7 @@ def main_page(request):
     return render(request, 'projects/main.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def projects_list(request):
     projects = Project.objects.all()
     context = {
@@ -30,6 +32,7 @@ def projects_list(request):
     return render(request, 'projects/projects_list.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def project_view(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     project_tasks = Task.objects.filter(project=project.id)
@@ -60,6 +63,7 @@ def project_view(request, project_slug):
     return render(request, 'projects/project.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def create_project(request):
     if request.method == "POST":
         post_data = request.POST.copy()
@@ -89,6 +93,7 @@ def create_project(request):
     return render(request, 'projects/project_form.html', context=context)
 
 
+@login_required(login_url='app_user:login')
 def project_delete(request, project_slug):
     project = Project.objects.get(slug=project_slug)
 
@@ -98,6 +103,7 @@ def project_delete(request, project_slug):
         return redirect('app_projects:projects_list')
 
 
+@login_required(login_url='app_user:login')
 def add_members(request, project_slug):
     project = Project.objects.get(slug=project_slug)
     if request.method == "POST":
