@@ -10,17 +10,8 @@
     <div class="auth-form">
         {% if page == 'register' %}
             <h2>Создайте аккаунт</h2>
-            <p>Введите ваши данные:</p>
             <form method="POST">
                 {% csrf_token %}
-{#                <input type="text" placeholder="Имя" required />#}
-{#                <input#}
-{#                    type="email"#}
-{#                    placeholder="Адрес электронной почты"#}
-{#                    required#}
-{#                />#}
-{#                <input type="password" placeholder="Пароль" required />#}
-{#                <input type="password" placeholder="Подтвердите пароль" required />#}
                 {% for field in form %}
                 	{{ field.label }}
                     {{ field }}
@@ -44,18 +35,6 @@
                 placeholder="Введите имя пользователя" />
             <input class="input input--password" id="formInput#passowrd" type="password" name="password"
                 placeholder="••••••••" />
-{#            <input#}
-{#                type="email"#}
-{#                id="email"#}
-{#                placeholder="Адрес электронной почты"#}
-{#                required#}
-{#            />#}
-{#            <input#}
-{#                type="password"#}
-{#                id="password"#}
-{#                placeholder="Пароль"#}
-{#                required#}
-{#            />#}
             <button type="submit" class="btn-primary">Войти</button>
         </form>
         <div class="register-row">

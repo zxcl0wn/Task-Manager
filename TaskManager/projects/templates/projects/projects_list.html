@@ -12,7 +12,7 @@
 
                 <p class="project-title"><strong>{{ project.title }}</strong></p>
                 <p class="project-description">{{ project.description }}</p>
-
+                <p>{{ project.comment }}</p>
                 <ul class="project-tasks">
                     {% for task in project.tasks.all %}
                     <li>{{ task.title }}</li>

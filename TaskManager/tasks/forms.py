@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Task
+from .models import Task, Subtask
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -50,3 +50,13 @@ class TaskCreateForm(ModelForm):
             'comment': forms.Textarea(attrs={'class': 'taskedit-textarea'}),
             'deadline_date': forms.DateInput(attrs={'class': 'taskedit-input', 'type': 'date'}),
         }
+
+
+class SubtaskChangeForm(ModelForm):
+    class Meta:
+        model = Subtask
+        fields = ['title']
+        labels = {
+            'title': 'Заголовок'
+        }
+

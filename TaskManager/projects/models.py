@@ -42,9 +42,9 @@ class Project(models.Model):
 
 class ProjectMember(models.Model):
     USER_ROLE_CHOICES = [
-        ('VIEWER', 'читатель'),
-        ('EDITOR', 'редактор'),
-        ('OWNER', 'администратор')
+        ('VIEWER', 'Читатель'),
+        ('EDITOR', 'Редактор'),
+        ('OWNER', 'Администратор')
     ]
 
     project = models.ForeignKey(Project, on_delete=models.CASCADE)

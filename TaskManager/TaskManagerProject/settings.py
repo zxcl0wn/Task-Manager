@@ -28,7 +28,9 @@ INSTALLED_APPS = [
     'tasks.apps.TasksConfig',
     'user.apps.UserConfig',
     'notification.apps.NotificationConfig',
+    'django_apscheduler'
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -38,6 +40,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'user.middleware.CurrentUserMiddleware',
 ]
 
 ROOT_URLCONF = 'TaskManagerProject.urls'
@@ -52,6 +55,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'notification.context_processors.notification_context'
             ],
         },
     },

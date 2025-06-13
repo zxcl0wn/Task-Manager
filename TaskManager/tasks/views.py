@@ -1,6 +1,8 @@
-from django.shortcuts import render, redirect
-from .models import Task
-from .forms import TaskForm, TaskCreateForm
+from django.shortcuts import render, redirect, get_object_or_404
+
+from projects.models import Project
+from .models import Task, Subtask
+from .forms import TaskForm, TaskCreateForm, SubtaskChangeForm
 
 
 def tasks_list(request):
@@ -25,6 +27,8 @@ def tasks_list(request):
 
 def task_view(request, task_slug):
     task = Task.objects.get(slug=task_slug)
+    subtasks = Subtask.objects.filter(task=task.id)
+
     if request.method == "POST":
         post_data = request.POST.copy()
         post_data['priority'] = task.priority
@@ -41,28 +45,39 @@ def task_view(request, task_slug):
 
     context = {
         'task': task,
+        'subtasks': subtasks,
         'form': form
     }
 
     return render(request, 'tasks/task.html', context=context)
 
 
-def task_create(reqeust):
+def task_create(request):
+    project_slug = request.GET.get('project')
+    initial_data = {}
     form = TaskCreateForm
 
-    if reqeust.method == "POST":
-        form = TaskCreateForm(reqeust.POST)
+    if project_slug:
+        project = get_object_or_404(Project, slug=project_slug)
+        initial_data['project'] = project.id
+
+    if request.method == "POST":
+        form = TaskCreateForm(request.POST)
+        project_slug = Project.objects.get(id=request.POST['project']).slug
+
         if form.is_valid():
             form.save()
-            return redirect('app_tasks:tasks_list')
+            return redirect('app_projects:project_view', project_slug=project_slug)
         else:
             print(form.errors)
+    else:
+        form = TaskCreateForm(initial=initial_data)
 
     context = {
         'form': form
     }
 
-    return render(reqeust, 'tasks/task_form.html', context=context)
+    return render(request, 'tasks/task_form.html', context=context)
 
 
 def task_delete(request, task_slug):
@@ -70,4 +85,41 @@ def task_delete(request, task_slug):
 
     if request.method == "POST":
         task.delete()
-        return redirect('app_tasks:tasks_list')
+    return redirect('app_tasks:tasks_list')
+
+
+def subtask_delete(request, subtask_id):
+    subtask = Subtask.objects.get(id=subtask_id)
+    task = subtask.task
+
+    if request.method == "POST":
+        print(f'!!!')
+        subtask.delete()
+        return redirect('app_tasks:task_view', task_slug=task.slug)
+
+
+def subtask_create(request, task_id):
+    task = get_object_or_404(Task, id=task_id)
+
+    if request.method == "POST":
+        Subtask.objects.create(task=task, title="Новая подзадача")
+
+        return redirect('app_tasks:task_view', task_slug=task.slug)
+
+
+def subtask_change(request, subtask_id):
+    subtask = Subtask.objects.get(id=subtask_id)
+
+    if request.method == "POST":
+        form = SubtaskChangeForm(request.POST, instance=subtask)
+        if form.is_valid():
+            form.save()
+            return redirect('app_tasks:tasks_list')
+    else:
+        form = SubtaskChangeForm(instance=subtask)
+
+    context = {
+        'form': form
+    }
+
+    return render(request, 'tasks/subtask_change.html', context=context)
