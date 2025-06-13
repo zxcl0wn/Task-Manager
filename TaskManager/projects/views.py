@@ -26,16 +26,31 @@ def main_page(request):
 @login_required(login_url='app_user:login')
 def projects_list(request):
     all_projects = Project.objects.filter()
-    projects = []
+    # projects = []
+    projects_with_roles = []
 
-    for project in all_projects:
-        project_members = ProjectMember.objects.filter(project=project, user=get_current_user()).exists()
-        if project_members:
-            projects.append(project)
-            # print(f'Project: {project}\nProject members: {project_members}\n')
+    # for project in all_projects:
+    #     project_members = ProjectMember.objects.filter(project=project, user=get_current_user()).exists()
+    #     if project_members:
+    #         projects.append(project)
+    #         # print(f'Project: {project}\nProject members: {project_members}\n')
+    #
+    # context = {
+    #     'projects': projects
+    # }
+
+    memberships = ProjectMember.objects.filter(
+        user=request.user
+    ).select_related('project')
+
+    for membership in memberships:
+        projects_with_roles.append({
+            'project': membership.project,
+            'is_admin': membership.user_role == 'OWNER'
+        })
 
     context = {
-        'projects': projects
+        'projects_with_roles': projects_with_roles
     }
 
     return render(request, 'projects/projects_list.html', context=context)

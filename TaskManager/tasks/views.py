@@ -1,7 +1,7 @@
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from django.db.models import QuerySet
+from django.db.models import QuerySet, Exists, OuterRef
 from django.shortcuts import render, redirect, get_object_or_404
 from projects.utils import get_user_role
 from projects.models import Project, ProjectMember
@@ -12,20 +12,28 @@ from .forms import TaskForm, TaskCreateForm, SubtaskChangeForm
 
 @login_required(login_url='app_user:login')
 def tasks_list(request):
-    all_tasks = Task.objects.all()
-    tasks_list = []
+    # all_tasks = Task.objects.all()
+    # tasks_list = []
+    #
+    # for task in all_tasks:
+    #     project_by_task = Project.objects.get(task=task)
+    #     project_by_task_members = ProjectMember.objects.filter(project=project_by_task, user=get_current_user()).exists()
+    #
+    #     if project_by_task_members:
+    #         tasks_list.append(task)
+    tasks = Task.objects.annotate(
+        is_admin=Exists(
+            ProjectMember.objects.filter(
+                project=OuterRef('project'),
+                user=request.user,
+                user_role='OWNER'
+            )
+        )
+    )
 
-    for task in all_tasks:
-        project_by_task = Project.objects.get(task=task)
-        project_by_task_members = ProjectMember.objects.filter(project=project_by_task, user=get_current_user()).exists()
-
-        if project_by_task_members:
-            tasks_list.append(task)
-
-    tasks = Task.objects.filter(title__in=tasks_list)
+    # tasks = Task.objects.filter(title__in=tasks_list)
     print(f'tasks!!!: {tasks}')
     filter_type = request.GET.get('filter')
-
     if filter_type == 'priority':
         tasks = tasks.order_by('priority')
     elif filter_type == 'deadline':

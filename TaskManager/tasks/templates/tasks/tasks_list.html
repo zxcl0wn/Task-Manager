@@ -11,10 +11,13 @@
             <div class="taskm-content">
                 <p class="taskm-title"><strong></strong> {{ task.title }}</p>
 
-                <form method="POST" action="{% url 'app_tasks:subtask_create' task.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="subtask-control-btn">Добавить подзадачу</button>
-                </form>
+                {% if task.is_admin %}
+                	<form method="POST" action="{% url 'app_tasks:subtask_create' task.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="subtask-control-btn">Добавить подзадачу</button>
+                    </form>
+                {% endif %}
+
 
                 <p class="taskm-meta">Срок сдачи: {{ task.deadline_date }}</p>
                 <p class="taskm-meta">Приоритет: {{ task.get_priority_display }}</p>
