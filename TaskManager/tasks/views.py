@@ -124,6 +124,12 @@ def task_delete(request, task_slug):
 def subtask_delete(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
     task = subtask.task
+    project = task.project
+    project_members = User.objects.filter(
+        id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True))
+
+    if get_current_user() not in project_members:
+        raise PermissionDenied("У вас нет доступа к этой задаче")
 
     if request.method == "POST":
         print(f'!!!')
@@ -145,6 +151,12 @@ def subtask_create(request, task_id):
 def subtask_change(request, subtask_id):
     subtask = Subtask.objects.get(id=subtask_id)
 
+    project = subtask.task.project
+    project_members = User.objects.filter(
+        id__in=ProjectMember.objects.filter(project=project).values_list('user', flat=True))
+
+    if get_current_user() not in project_members:
+        raise PermissionDenied("У вас нет доступа к этой задаче")
     if request.method == "POST":
         form = SubtaskChangeForm(request.POST, instance=subtask)
         if form.is_valid():
