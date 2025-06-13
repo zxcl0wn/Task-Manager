@@ -19,7 +19,7 @@
         <a href="{% url 'app_tasks:tasks_list' %}">Задачи</a>
         <a href="{% url 'app_projects:projects_list' %}">Проекты</a>
         {% if request.user.is_authenticated %}
-            <a href="{% url 'app_user:profile' %}"><img src="{% static 'images/user_profile.svg' %}" style="max-height: 35px" alt=""></a>
+            <a href="{% url 'app_user:profile' %}"><img src="{% static 'images/user_profile.svg' %}" style="max-height: 20px" alt=""></a>
         {% else %}
             <a href="{% url 'app_user:register' %}">Регистрация/Вход</a>
         {% endif %} 

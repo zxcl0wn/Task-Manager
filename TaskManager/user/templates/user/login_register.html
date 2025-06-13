@@ -33,7 +33,9 @@
                 <a href="{% url 'app_user:login' %}">Войти</a>
             </div>
         {% else %}
-        <h2>Войдите в аккаунт</h2>
+        <h2 class="nowrap">Войдите в аккаунт</h2>
+
+
         <p>Введите ваши данные</p>
         <form id="loginForm" method="POST" action="{% url 'app_user:login' %}">
             {% csrf_token %}
