@@ -122,14 +122,13 @@ def add_members(request, project_slug):
         form = AddMembersForm(request.POST, project=project)
         user = User.objects.get(id=request.POST['user'])
         user_role = request.POST['user_role']
-        # print(f'request.POST: {request.POST}')
 
         ProjectMember.objects.create(
             project=project,
             user=user,
             user_role=user_role
         )
-        return redirect('app_projects:projects_list')
+        return redirect('app_projects:project_view', project_slug=project.slug)
     else:
         form = AddMembersForm(project=project)
     context = {
