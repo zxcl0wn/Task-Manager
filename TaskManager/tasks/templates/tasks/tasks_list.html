@@ -10,7 +10,12 @@
         <a href="{% url 'app_tasks:task_view' task.slug %}" class="taskm-card">
             <div class="taskm-content">
                 <p class="taskm-title"><strong></strong> {{ task.title }}</p>
-                <button class="taskm-subtask-btn">Добавить подзадачи</button>
+
+                <form method="POST" action="{% url 'app_tasks:subtask_create' task.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="subtask-control-btn">Добавить подзадачи</button>
+                </form>
+
                 <p class="taskm-meta">Срок сдачи: {{ task.deadline_date }}</p>
                 <p class="taskm-meta">Приоритет: {{ task.get_priority_display }}</p>
                 <p class="taskm-meta">Проект: {{ task.project }}</p>
