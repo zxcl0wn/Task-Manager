@@ -955,20 +955,21 @@ h2 {
     overflow-x: auto;
     padding: 0 40px 20px;
 }
-
-.project-card {
-    border: 1px solid #f44336;
-    border-radius: 10px;
-    width: 250px;
-    min-height: 400px;
-    padding: 50px;
-    text-align: center;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    height: 100%;
-    gap: 30px;
+:root{
+  --card-w: 360px;
+  --card-h: 560px;       /* выберите нужную высоту */
+}
+.project-card{
+  width: var(--card-w);
+  height: var(--card-h); /* вместо min-height */
+  border: 1px solid #f44336;
+  border-radius: 10px;
+  padding: 40px 30px;
+  box-sizing: border-box;   /* чтобы padding не надувал блок */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color:#333;
 }
 .project-top,
 .project-bottom {
@@ -1017,6 +1018,9 @@ h2 {
     font-size: 13px;
     color: #666;
     margin-bottom: 5px;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
 }
 .project-card .project-tag {
     margin-top: 10px;
@@ -1125,8 +1129,8 @@ h2 {
     gap: 20px;
     border: 1px solid #f44336;
     border-radius: 10px;
-    width: 250px;
-    min-height: 480px;
+    width: var(--card-w);
+    height: var(--card-h);
     padding: 50px;
     display: flex;
     flex-direction: column;
