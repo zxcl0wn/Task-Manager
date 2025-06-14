@@ -86,8 +86,11 @@ def task_view(request, task_slug):
 
 @login_required(login_url='app_user:login')
 def task_create(request):
-    is_all_user_projects_exists = Project.objects.filter(users=get_current_user()).exists()
-    if not is_all_user_projects_exists:
+    is_owner_exists = ProjectMember.objects.filter(
+        user=request.user,
+        user_role='OWNER'
+    ).exists()
+    if not is_owner_exists:
         return redirect('app_projects:projects_list')
 
     project_slug = request.GET.get('project')
