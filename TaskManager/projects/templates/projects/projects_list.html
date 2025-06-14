@@ -9,37 +9,39 @@
         {% for project_data in projects_with_roles %}
         <div class="project-card">
             <a href="{% url 'app_projects:project_view' project_data.project.slug %}">
+                <div class="project-top">
+                    <p class="project-title"><strong>{{ project_data.project.title }}</strong></p>
+                    <p class="project-description">{{ project_data.project.description|default:" " }}</p>
+                    <p>{{ project_data.project.comment|default:" " }}</p>
+                    <ul class="project-tasks">
+                        {% for task in project_data.project.tasks.all %}
+                        <li>{{ task.title }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
 
-                <p class="project-title"><strong>{{ project_data.project.title }}</strong></p>
-                <p class="project-description">{{ project_data.project.description }}</p>
-                <p>{{ project_data.project.comment }}</p>
-                <ul class="project-tasks">
-                    {% for task in project_data.project.tasks.all %}
-                    <li>{{ task.title }}</li>
-                    {% endfor %}
-                </ul>
-                
-                {% if project_data.is_admin %}
-                    <a href="{% url 'app_tasks:task_create' %}?project={{ project_data.project.slug }}" class="project-btn">Добавить задачу</a>
-                {% endif %}
+                <div class="project-bottom">
+                    {% if project_data.is_admin %}
+                    <a href="{% url 'app_tasks:task_create' %}?project={{ project_data.project.slug }}" class="project-btn">
+                        Добавить задачу
+                    </a>
+                    {% else %}
+                    <div class="project-btn-placeholder" style="height: 40px;"></div>
+                    {% endif %}
 
-                <p class="project-meta">Статус проекта: {{ project_data.project.get_visibility_display }}</p>
+                    <p class="project-meta">Статус проекта:</p>
+                    <p class="project-status">{{ project_data.project.get_visibility_display }}</p>
 
-                <span
-                    class="project-status {% if project_data.project.status == 'active' %}in-progress{% else %}completed{% endif %}">
-                    {{ project_data.project.get_status_display }}
-                </span>
+                    <span class="project-tag {% if project_data.project.status == 'active' %}active{% else %}done{% endif %}">
+                        {{ project_data.project.get_status_display }}
+                    </span>
 
-                <a href="#" class="st-btn">{{ project_data.project.get_is_completed_display }}</a>
-
+                    <a href="#" class="st-btn">{{ project_data.project.get_is_completed_display }}</a>
+                </div>
             </a>
         </div>
         {% endfor %}
 
-        {# <div class="project-card project-add">#}
-            {# <div class="project-add-btn">+</div>#}
-            {# <p class="project-add-text">Создать проект</p>#}
-            {# </div>#}
         <a href="{% url 'app_projects:create_project' %}" class="project-card project-add">
             <div class="project-add-btn">+</div>
             <p class="project-add-text">Создать проект</p>
@@ -52,6 +54,5 @@
     </div>
 </section>
 
-<!-- Подключение JS -->
 <script src="{% static 'projects/js/projects_scroll.js' %}"></script>
 {% endblock %}

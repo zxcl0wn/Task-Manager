@@ -377,7 +377,7 @@ h2 {
     color: #f44336;
     font-size: 14px;
     font-weight: 500;
-    font-family: Inter;
+    font-family: 'Inter', sans-serif;
     padding: 10px 12px;
     display: flex;
     align-items: center;
@@ -422,6 +422,7 @@ h2 {
     padding: 10px 18px;
     border-radius: 8px;
     font-size: 14px;
+    font-family: 'Inter', sans-serif;
     cursor: pointer;
     justify-content: center;
     font-family: Inter;
@@ -689,7 +690,6 @@ h2 {
 
 .taskm-filters label {
     display: block;
-    /* чтобы каждый label шел в новой строке */
     margin-bottom: 10px;
     font-size: 16px;
 }
@@ -712,6 +712,7 @@ h2 {
 .taskedit-label {
     font-size: 18px;
     font-weight: 700;
+    font-family: 'Inter', sans-serif;
     margin-bottom: 8px;
     color: #1a1a1a;
     display: block;
@@ -800,7 +801,8 @@ h2 {
     padding: 40px 35px 50px;
     display: flex;
     justify-content: center;
-    align-items: flex-start;      
+    align-items: center;        /* по вертикали */
+    justify-content: center;      
     text-decoration: none;
     color: inherit;
     transition: box-shadow 0.2s ease;
@@ -811,11 +813,12 @@ h2 {
     box-shadow: 0 0 10px rgba(244, 67, 54, 0.3);
 }
 
-.taskm-content {           
-    width: 100%;
-    text-align: center;
+.taskm-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;   /* текст по центру */
+    gap: 12px;             /* расстояние между элементами */
 }
-
 .taskm-title {
     font-weight: bold;
     margin-bottom: 10px;
@@ -952,20 +955,33 @@ h2 {
     overflow-x: auto;
     padding: 0 40px 20px;
 }
-
-.project-card {
-    border: 1px solid #f44336;
-    border-radius: 10px;
-    width: 250px;
-    min-height: 400px;
-    padding: 50px;
-    text-align: center;
-    color: #333;
-    display: flex;
-    gap: 30px;
-    flex-direction: column;
-    justify-content: space-between;
+:root{
+  --card-w: 360px;
+  --card-h: 560px;       /* выберите нужную высоту */
 }
+.project-card{
+  width: var(--card-w);
+  height: var(--card-h); /* вместо min-height */
+  border: 1px solid #f44336;
+  border-radius: 10px;
+  padding: 40px 30px;
+  box-sizing: border-box;   /* чтобы padding не надувал блок */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  color:#333;
+}
+.project-top,
+.project-bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+.project-top {
+    flex-grow: 1;
+}
+
 
 .project-title {
     font-weight: bold;
@@ -995,15 +1011,21 @@ h2 {
     font-weight: 500;
     text-decoration: none;
     display: inline-block;
-    margin-bottom: 25px;
+    margin-top: 10px;
 }
 
 .project-status {
     font-size: 13px;
     color: #666;
     margin-bottom: 5px;
+    display: inline-block;
+    margin-left: auto;
+    margin-right: auto;
 }
-
+.project-card .project-tag {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
 .project-tag {
     padding: 8px 16px;
     font-size: 12px;
@@ -1075,10 +1097,15 @@ h2 {
 }
 
 .project-meta {
-    font-size: 14px;
-    color: #555;
-    margin-bottom: -20px;
+    margin: 0;
     font-weight: bold;
+    font-size: 14px;
+    margin-top: 20px;
+}
+.project-status {
+    font-size: 14px;
+    color: #444;
+    margin-bottom: -20px;
 }
 
 .st-btn {
@@ -1102,8 +1129,8 @@ h2 {
     gap: 20px;
     border: 1px solid #f44336;
     border-radius: 10px;
-    width: 250px;
-    min-height: 400px;
+    width: var(--card-w);
+    height: var(--card-h);
     padding: 50px;
     display: flex;
     flex-direction: column;
@@ -1134,7 +1161,6 @@ h2 {
     color: #555;
     font-weight: 500;
 }
-
 /* БЛОК ФОРМЫ СОЗДАНИЯ ПРОЕКТА */
 .projform-card {
     border: 1px solid #f44336;
@@ -1977,4 +2003,11 @@ h2 {
         text-align: center;
     }
 }
+@media screen and (max-width: 600px) {
+  .project-card {
+    min-height: 480px;
+    height: auto;
+  }
+}
+
 
