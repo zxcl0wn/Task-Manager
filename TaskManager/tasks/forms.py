@@ -56,7 +56,7 @@ class TaskCreateForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = get_current_user()
-        super().__init__()
+        super().__init__(*args, **kwargs)
 
         if self.user:
             self.fields['project'].queryset = Project.objects.filter(
