@@ -24,3 +24,8 @@ pip install -r requirements.txt
 cd TaskManager
 python manage.py runserver
 ```
+
+# Запуск работы оповещений
+```powershall
+python manage.py runapscheduler
+```
