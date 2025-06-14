@@ -21,7 +21,9 @@ def tasks_list(request):
     #
     #     if project_by_task_members:
     #         tasks_list.append(task)
-    tasks = Task.objects.annotate(
+    tasks = Task.objects.filter(
+        project__users=request.user
+    ).annotate(
         is_admin=Exists(
             ProjectMember.objects.filter(
                 project=OuterRef('project'),
@@ -29,8 +31,7 @@ def tasks_list(request):
                 user_role='OWNER'
             )
         )
-    )
-
+    ).distinct()
     # tasks = Task.objects.filter(title__in=tasks_list)
     print(f'tasks!!!: {tasks}')
     filter_type = request.GET.get('filter')
